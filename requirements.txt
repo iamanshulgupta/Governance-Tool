@@ -1,4 +1,4 @@
 streamlit
 pandas
-openpyxlgit add app.py requirements.txt
+openpyxl
 
