@@ -1,0 +1,255 @@
+{
+  "compatibilityLevel": 1600,
+  "model": {
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"BlinkIT Grocery Data\"]"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.146.1254.0 (25.08)+791a7518fadc83da883d79322a2658aff57c8db3"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-IN",
+    "cultures": [
+      {
+        "name": "en-IN",
+        "linguisticMetadata": {
+          "content": {
+            "Language": "en-US",
+            "Version": "1.0.0"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "tables": [
+      {
+        "name": "BlinkIT Grocery Data",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Item_Fat_Content",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "b807110f-0a4f-4b24-835b-d1ffda00df0a",
+            "sourceColumn": "Item_Fat_Content",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Item_Identifier",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "2369808f-68ba-4fec-bf7c-f70758da0742",
+            "sourceColumn": "Item_Identifier",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Item_Type",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "9d5d8bbc-b762-4f73-bb26-e32e0011771d",
+            "sourceColumn": "Item_Type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Outlet_Establishment_Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "6500eef8-a09f-4cf7-9a48-545346f81e96",
+            "sourceColumn": "Outlet_Establishment_Year",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Outlet_Identifier",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "02fe17af-19c2-4a08-a6a9-d027e93af828",
+            "sourceColumn": "Outlet_Identifier",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Outlet_Location_Type",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "60748d99-01e4-4368-bc42-8b3087074ca5",
+            "sourceColumn": "Outlet_Location_Type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Outlet_Size",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "9ef56e7c-15be-4b82-bd25-3bfb310771cc",
+            "sourceColumn": "Outlet_Size",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Outlet_Type",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "4289075c-53ce-4ead-9c2d-80de18ca86ee",
+            "sourceColumn": "Outlet_Type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Item_Visibility",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "9d2e2664-7b29-4977-ad06-aed98df6b9c5",
+            "sourceColumn": "Item_Visibility",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Item_Weight",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "8f1f6aed-0116-4dba-bb9d-cb01cd94c887",
+            "sourceColumn": "Item_Weight",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Total_Sales",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "7bf8595f-8eff-435f-bc81-2b84e926b992",
+            "sourceColumn": "Total_Sales",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Rating",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "386a89cd-3d05-4265-9f9c-f29f39a15919",
+            "sourceColumn": "Rating",
+            "summarizeBy": "sum"
+          }
+        ],
+        "lineageTag": "cc078e28-4ee6-4e29-a617-84143b0ddee7",
+        "partitions": [
+          {
+            "name": "BlinkIT Grocery Data",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"C:\\Users\\moham\\Downloads\\BlinkIT Grocery Data.csv\"),[Delimiter=\",\", Columns=12, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Item_Fat_Content\", type text}, {\"Item_Identifier\", type text}, {\"Item_Type\", type text}, {\"Outlet_Establishment_Year\", Int64.Type}, {\"Outlet_Identifier\", type text}, {\"Outlet_Location_Type\", type text}, {\"Outlet_Size\", type text}, {\"Outlet_Type\", type text}, {\"Item_Visibility\", type number}, {\"Item_Weight\", type number}, {\"Total_Sales\", type number}, {\"Rating\", Int64.Type}}),",
+                "    #\"Removed Duplicates\" = Table.Distinct(#\"Changed Type\"),",
+                "    #\"Removed Blank Rows\" = Table.SelectRows(#\"Removed Duplicates\", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {\"\", null}))),",
+                "    #\"Filtered Rows1\" = Table.SelectRows(#\"Removed Blank Rows\", each [Item_Visibility] <> null and [Item_Visibility] <> \"\"),",
+                "    #\"Filtered Rows\" = Table.SelectRows(#\"Filtered Rows1\", each [Item_Weight] <> null and [Item_Weight] <> \"\"),",
+                "    #\"Replaced Value\" = Table.ReplaceValue(#\"Filtered Rows\",\"reg\",\"Regular\",Replacer.ReplaceText,{\"Item_Fat_Content\"}),",
+                "    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"LF\",\"Low Fat\",Replacer.ReplaceText,{\"Item_Fat_Content\"}),",
+                "    #\"Replaced Value2\" = Table.ReplaceValue(#\"Replaced Value1\",0,null,Replacer.ReplaceValue,{\"Item_Visibility\"}),",
+                "    #\"Filtered Rows2\" = Table.SelectRows(#\"Replaced Value2\", each [Item_Visibility] <> null and [Item_Visibility] <> \"\")",
+                "in",
+                "    #\"Filtered Rows2\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

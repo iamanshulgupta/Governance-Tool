@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Global Electronics Retailers Analysis Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "58f9a79a-478a-498f-9113-8bee2cc52361"
+  }
+}

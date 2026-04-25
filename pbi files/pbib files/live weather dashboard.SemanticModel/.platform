@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "live weather dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ba96dab5-0f9b-483c-9ea5-283be3e3e08a"
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "name": "Bloomberg Validated",
+  "dataColors": [
+    "#FFFFFF",
+    "#00D500",
+    "#FFD700",
+    "#FF8C00",
+    "#0055CC",
+    "#8AD4EB",
+    "#FE9666",
+    "#A66999"
+  ],
+  "foreground": "#FFFFFF",
+  "background": "#000B1A",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#000000"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "visualHeader": [
+          {
+            "foreground": {
+              "solid": {
+                "color": "#000000"
+              }
+            },
+            "background": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#000B1A"
+              }
+            }
+          }
+        ],
+        "outspacePane": [
+          {
+            "backgroundColor": {
+              "solid": {
+                "color": "#DBDBDB"
+              }
+            },
+            "foregroundColor": {
+              "solid": {
+                "color": "#000000"
+              }
+            }
+          }
+        ],
+        "filterCard": [
+          {
+            "$id": "Available",
+            "backgroundColor": {
+              "solid": {
+                "color": "#C6C6C6"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "visualTooltip": [
+          {
+            "themedValueFontColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "visualHeaderTooltip": [
+          {}
+        ]
+      }
+    }
+  },
+  "textClasses": {
+    "label": {
+      "color": "#FFFFFF",
+      "fontSize": 12
+    },
+    "callout": {
+      "color": "#FFFFFF",
+      "fontSize": 14
+    },
+    "title": {
+      "color": "#FFFFFF",
+      "fontSize": 14
+    },
+    "header": {
+      "color": "#FFFFFF",
+      "fontSize": 12
+    }
+  },
+  "foregroundNeutralSecondary": "#FFFFFF",
+  "backgroundLight": "#FFFFFF",
+  "foregroundNeutralTertiary": "#FFFFFF"
+}

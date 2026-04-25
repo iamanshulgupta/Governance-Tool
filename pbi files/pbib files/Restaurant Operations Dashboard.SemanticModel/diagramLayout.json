@@ -1,0 +1,61 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 20,
+            "y": 36.9783935546875
+          },
+          "nodeIndex": "Restaurant Operations",
+          "nodeLineageTag": "9a9efb54-1a56-49f1-a959-bcd1bc4532dc",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 637,
+            "y": 40.4193115234375
+          },
+          "nodeIndex": "_Measure",
+          "nodeLineageTag": "6ae498e9-b1cb-4e2d-ac31-4890e2798b3e",
+          "size": {
+            "height": 573,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 372,
+            "y": 66.4193115234375
+          },
+          "nodeIndex": "Date Table",
+          "nodeLineageTag": "f15a5fc1-0532-4b81-a641-3255f952bbaf",
+          "size": {
+            "height": 213,
+            "width": 234
+          },
+          "zIndex": 2
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

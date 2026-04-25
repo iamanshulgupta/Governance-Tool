@@ -1,0 +1,297 @@
+createOrReplace
+
+	/// Fact table containing transactional sales data including revenue, cost, profit, quantity and shipping costs
+	table Sales
+		lineageTag: ca2a988e-4267-4069-ba7e-55c29e84ea9f
+
+		/// Unique row identifier for each sales transaction record
+		column 'Row ID'
+			dataType: int64
+			formatString: 0
+			lineageTag: 2a022327-c102-4c6a-b9ce-5b4e353cfd6a
+			summarizeBy: count
+			sourceColumn: Row ID
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Unique identifier for each customer order, shared across multiple rows if the order contains multiple products
+		column 'Order ID'
+			dataType: string
+			lineageTag: 32988466-1eb4-47c6-9d2e-10010008a2a1
+			summarizeBy: none
+			sourceColumn: Order ID
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Date the customer placed the order
+		column 'Order Date'
+			dataType: dateTime
+			formatString: Long Date
+			lineageTag: 4bf0860b-a957-462a-860e-377ab6aa0b21
+			summarizeBy: none
+			sourceColumn: Order Date
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		/// Date the order was shipped to the customer
+		column 'Ship Date'
+			dataType: dateTime
+			formatString: Long Date
+			lineageTag: 8f3097c0-3d0c-4fe0-936e-99773d062df8
+			summarizeBy: none
+			sourceColumn: Ship Date
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		/// Shipping method selected for the order (e.g. Standard Class, First Class, Second Class, Same Day)
+		column 'Ship Mode'
+			dataType: string
+			lineageTag: a0586940-4a3c-4f04-b661-23be98bf59bf
+			summarizeBy: none
+			sourceColumn: Ship Mode
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Unique identifier for the customer, used to link to the Customer dimension table
+		column 'Customer ID'
+			dataType: string
+			lineageTag: b2fe617a-9691-4c0a-b30a-8f643b0f7da9
+			summarizeBy: none
+			sourceColumn: Customer ID
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Customer market segment (e.g. Consumer, Corporate, Home Office)
+		column Segment
+			dataType: string
+			lineageTag: 88a81fd6-ee26-4f45-b772-43c6161a73a1
+			summarizeBy: none
+			sourceColumn: Segment
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Unique identifier for the product, used to link to the Product dimension table
+		column 'Product ID'
+			dataType: string
+			lineageTag: 63fee626-84bd-4bf1-bc55-1320f869d75f
+			summarizeBy: none
+			sourceColumn: Product ID
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Number of units ordered for the product in this transaction
+		column Quantity
+			dataType: int64
+			formatString: 0
+			lineageTag: df3ef6c3-1bf1-4a37-9d5c-98e3b2d56284
+			summarizeBy: sum
+			sourceColumn: Quantity
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Total sales value before applying any discount (Price per Unit × Quantity)
+		column 'Gross Sales'
+			dataType: double
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: f366027e-c68d-4136-9ad0-ff88f5868b4b
+			summarizeBy: sum
+			sourceColumn: Gross Sales
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Discount percentage applied to the order line as a decimal (e.g. 0.2 = 20%)
+		column 'Discount %'
+			dataType: double
+			formatString: 0%;-0%;0%
+			lineageTag: 3d1f0187-c923-422d-b7f5-b006333a0b33
+			summarizeBy: sum
+			sourceColumn: Discount %
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Sales","TableItemName":"Discount % (bins)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		/// Monetary value of the discount applied (Gross Sales × Discount %)
+		column 'Discounted Value'
+			dataType: double
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: 15bc1d7a-5867-4090-9db2-6e168f86b1a3
+			summarizeBy: sum
+			sourceColumn: Discounted Value
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Final sales revenue after deducting the discount (Gross Sales − Discounted Value)
+		column 'Net Sales'
+			dataType: double
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: d0c3214f-7f23-4271-8e29-b5b4ae0a89cf
+			summarizeBy: sum
+			sourceColumn: Net Sales
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Total cost of goods sold for the transaction (Cost per Unit × Quantity)
+		column 'Total Cost'
+			dataType: double
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: 860d4d7a-7788-493f-882a-54c77ac8778b
+			summarizeBy: sum
+			sourceColumn: Total Cost
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Shipping and freight cost charged for delivering the order
+		column 'Shipping Cost'
+			dataType: int64
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: 25b54d0c-fbf9-480c-8536-e0040a0374c7
+			summarizeBy: sum
+			sourceColumn: Shipping Cost
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Net profit for the transaction (Net Sales − Total Cost − Shipping Cost)
+		column Profit
+			dataType: double
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: 823bfc70-17e5-4d8c-9205-5a82984502a3
+			summarizeBy: sum
+			sourceColumn: Profit
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Calculated column grouping Discount % into 4 equal-width bins for distribution analysis
+		column 'Discount % (bins)' = ```
+				VAR __Count = 4
+				
+				VAR __Min = MIN('Sales'[Discount %])
+				
+				VAR __Max = MAX('Sales'[Discount %])
+				
+				VAR __Difference = (__Max - __Min)
+				
+				VAR __Size = IF(__Difference > 0, __Difference / __Count, 1)
+				
+				VAR __BinNumber = 
+					IF(
+						ISBLANK('Sales'[Discount %]),
+						BLANK(),
+						ROUNDDOWN(('Sales'[Discount %] - __Min) / __Size, 0)
+					)
+				
+				RETURN
+					IF(
+						ISBLANK('Sales'[Discount %]),
+						BLANK(),
+						__Min + (MIN(__BinNumber, __Count - 1) * __Size)
+					)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: d12e2c84-fd10-4dbb-8fa4-c7e58eb623af
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata =
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "Sales"
+					          }
+					        },
+					        "Property": "Discount %"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"s","Entity":"Sales"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"s"}},"Property":"Discount %"}}],"BinItem":{"Expression":{"Member":{"Expression":{"Discretize":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"s"}},"Property":"Discount %"}},"Count":4}},"Member":"Min"}}}}
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Selling price per individual unit of the product before discounts
+		column 'Price per Unit'
+			dataType: double
+			lineageTag: eb98199c-2137-42bf-8be6-40dcbca9b042
+			summarizeBy: sum
+			sourceColumn: Price per Unit
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Cost price per individual unit of the product
+		column 'Cost per Unit'
+			dataType: double
+			lineageTag: 30920983-2237-47ba-b390-0129693b4a79
+			summarizeBy: sum
+			sourceColumn: Cost per Unit
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		partition Sales = m
+			mode: import
+			source =
+					let
+					    Source = Csv.Document(File.Contents("C:\Users\ZEMI\Documents\Data\Power BI\Projects\Superstore\Superstore_Prod_v2.csv"),[Delimiter=",", Columns=27, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+					    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Row ID", Int64.Type}, {"Order ID", type text}, {"Order Date", type date}, {"Ship Date", type date}, {"Ship Mode", type text}, {"Customer ID", type text}, {"Customer Name", type text}, {"Segment", type text}, {"Country", type text}, {"City", type text}, {"State", type text}, {"Postal Code", Int64.Type}, {"Region", type text}, {"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"Price per Unit", type number}, {"Cost per Unit", type number}, {"Quantity", Int64.Type}, {"Gross Sales", type number}, {"Discount %", type number}, {"Discounted Value", type number}, {"Net Sales", type number}, {"COGS", type number}, {"Shipping Cost", Int64.Type}, {"Profit", type number}}),
+					    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Profit", "Profit"}}),
+					    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns",{"Row ID", "Order ID", "Order Date", "Ship Date", "Ship Mode", "Customer ID", "Segment", "Product ID", "Price per Unit", "Cost per Unit", "Quantity", "Gross Sales", "Discount %", "Discounted Value", "Net Sales", "COGS", "Shipping Cost", "Profit"}),
+					    #"Renamed Columns1" = Table.RenameColumns(#"Removed Other Columns",{{"COGS", "Cost of Goods Sold"}, {"Profit", "Profit"}, {"Net Sales", "Net Sales"}}),
+					    #"Sorted Rows" = Table.Sort(#"Renamed Columns1",{{"Order Date", Order.Descending}}),
+					    #"Filtered Rows" = Table.SelectRows(#"Sorted Rows", each ([Ship Date] <> #date(2026, 1, 1) and [Ship Date] <> #date(2026, 1, 2) and [Ship Date] <> #date(2026, 1, 3) and [Ship Date] <> #date(2026, 1, 4) and [Ship Date] <> #date(2026, 1, 5))),
+					    #"Renamed Columns2" = Table.RenameColumns(#"Filtered Rows",{{"Cost of Goods Sold", "Total Cost"}})
+					in
+					    #"Renamed Columns2"
+
+		annotation PBI_NavigationStepName = Navigation
+
+		annotation PBI_ResultType = Table

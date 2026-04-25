@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Restaurant Operations Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "fd1ec495-3ccc-4070-b0ca-23fce48880c2"
+  }
+}

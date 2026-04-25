@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "UK Railway Ticketing - Huynh Tan Phat"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "b110edb4-b576-427a-b2ab-3fce53683900"
+  }
+}

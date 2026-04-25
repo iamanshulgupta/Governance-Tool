@@ -1,0 +1,259 @@
+createOrReplace
+
+	/// Metadata table returning column-level details for all tables in the model via INFO.VIEW.COLUMNS()
+	table 'Model Columns'
+		isHidden
+		lineageTag: a5c9dc8f-4dcb-4c0f-8bc8-b4f56c13c188
+
+		/// Unique numeric identifier for each column in the model
+		column ID
+			isHidden
+			formatString: 0
+			lineageTag: 1b10e9f9-71be-4945-aeb2-dacb0df15a47
+			summarizeBy: count
+			isNameInferred
+			sourceColumn: [ID]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Display name of the column as shown in the model
+		column Name
+			isHidden
+			lineageTag: cf929267-3121-46f3-a500-9e720325973e
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Name]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Name of the table that the column belongs to
+		column Table
+			isHidden
+			lineageTag: 05bddd40-dba8-4cea-b32c-efe2571fb858
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Table]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Data type of the column (e.g. String, Integer, Decimal, Boolean, DateTime)
+		column DataType
+			isHidden
+			lineageTag: d53d58b5-9d31-4256-9f0a-55f89212ab1c
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [DataType]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Semantic data category assigned to the column (e.g. Address, City, Country, ImageUrl)
+		column DataCategory
+			isHidden
+			lineageTag: d62ecc30-3060-43ed-a6c2-4d9cbdea3ec3
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [DataCategory]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// User-defined description or documentation text for the column
+		column Description
+			isHidden
+			lineageTag: 72347ccd-981a-4a33-b594-68715f39c816
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Description]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Indicates whether the column is hidden from report view (TRUE/FALSE)
+		column IsHidden
+			isHidden
+			formatString: """TRUE"";""TRUE"";""FALSE"""
+			lineageTag: efe10388-d142-49b9-ade2-bba1551d7d6f
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [IsHidden]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Indicates whether all values in the column are unique (TRUE/FALSE)
+		column IsUnique
+			isHidden
+			formatString: """TRUE"";""TRUE"";""FALSE"""
+			lineageTag: 250a7469-0322-42e7-83e7-d518b36645f7
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [IsUnique]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Indicates whether the column is designated as a primary key column (TRUE/FALSE)
+		column IsKey
+			isHidden
+			formatString: """TRUE"";""TRUE"";""FALSE"""
+			lineageTag: 41a74367-8b79-4b83-9b9c-380f759c5fad
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [IsKey]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Indicates whether the column allows null/blank values (TRUE/FALSE)
+		column IsNullable
+			isHidden
+			formatString: """TRUE"";""TRUE"";""FALSE"""
+			lineageTag: f63a3bdb-2058-46b2-ba63-6c0d67b62790
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [IsNullable]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Text alignment of the column values in visuals (e.g. Left, Right, Center)
+		column Alignment
+			isHidden
+			lineageTag: b3d5006f-e9bf-40f4-9613-3c7d10f3204b
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Alignment]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Default aggregation behaviour for the column (e.g. Sum, Average, Count, None)
+		column SummarizeBy
+			isHidden
+			lineageTag: dd8a8632-3998-420b-aeeb-745f19d596c1
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [SummarizeBy]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Storage mode of the column (e.g. Auto, Encoded, NotEncoded)
+		column ColumnStorage
+			isHidden
+			lineageTag: f67ae2df-2665-494c-91b8-3f2f2062544a
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [ColumnStorage]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Column type classification (e.g. Data, Calculated, CalculatedTableColumn)
+		column Type
+			isHidden
+			lineageTag: fce039b4-e2a8-4f39-8f93-8423b6e23456
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Type]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Name of the source column from the underlying data source or query
+		column SourceColumn
+			isHidden
+			lineageTag: 88609c60-a1d0-46fb-84e1-68bdc502565c
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [SourceColumn]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// DAX expression used to define a calculated column
+		column Expression
+			isHidden
+			lineageTag: 08f8b3e8-f20c-45c7-98b8-e7d22cf36cf1
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Expression]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Format string that controls how column values are displayed (e.g. $#,0, 0.00%)
+		column FormatString
+			isHidden
+			lineageTag: dac0de01-3ddd-40d3-b3d1-c09834be1b51
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [FormatString]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Indicates whether the column is available for MDX queries (TRUE/FALSE)
+		column IsAvailableInMDX
+			isHidden
+			formatString: """TRUE"";""TRUE"";""FALSE"""
+			lineageTag: fc12e6f2-e5ea-4269-949c-2ead9d719c50
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [IsAvailableInMDX]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Name of the column used to sort this column in visuals
+		column SortByColumn
+			isHidden
+			lineageTag: 399f497a-c939-49f5-abd2-3d94e9189206
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [SortByColumn]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Defines how the column behaves when used for grouping in visuals
+		column GroupingBehavior
+			isHidden
+			lineageTag: 6a0f8df8-b630-43a4-9dcb-3c9eef996c85
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [GroupingBehavior]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Data type reported by the source provider for the underlying column
+		column SourceProviderType
+			isHidden
+			lineageTag: 1ffcdba2-7872-41b0-aca5-9ad64c2016e8
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [SourceProviderType]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Folder path used to organise the column within a table in the field list
+		column DisplayFolder
+			isHidden
+			lineageTag: e17039b1-f385-476e-89ae-0c2383b11083
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [DisplayFolder]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Indicates if this column serves as an alternate of another column for aggregation purposes
+		column AlternateOf
+			isHidden
+			lineageTag: 4e2f44d2-3470-4589-9cb2-d303f64a955b
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [AlternateOf]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Unique GUID used to track the column identity across model changes and deployments
+		column LineageTag
+			isHidden
+			lineageTag: 78a6f4ab-ecbe-4434-8d36-e46b283870cd
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [LineageTag]
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Model Columns' = calculated
+			mode: import
+			source = INFO.VIEW.COLUMNS()
+
+		annotation PBI_Id = 157a653564284ca6bde4d02859209bfb
+

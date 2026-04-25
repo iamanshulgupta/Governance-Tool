@@ -1,0 +1,113 @@
+createOrReplace
+
+	/// Dimension table containing product details including sub-category and product name
+	table Product
+		lineageTag: b5b8e117-8eff-4032-9072-a7ca85c83221
+
+		/// Unique identifier for each product, used as the primary key to link to the Sales fact table
+		column 'Product ID'
+			dataType: string
+			lineageTag: bfe58ee7-711c-440d-a18f-bbd99ec31a7f
+			summarizeBy: none
+			sourceColumn: Product ID
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Product sub-category used to link to the Subcategory dimension table for category hierarchy
+		column Sub-Category
+			dataType: string
+			lineageTag: 2650532f-9e77-4d76-807f-9060d4053c87
+			summarizeBy: none
+			sourceColumn: Sub-Category
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Full descriptive name of the product
+		column 'Product Name'
+			dataType: string
+			lineageTag: 414cd2e1-6f52-47ba-888f-6ec50dd2e34f
+			summarizeBy: none
+			sourceColumn: Product Name
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Product Clusters","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		/// Clusters for Product Name
+		column 'Product Clusters' = ```
+				VAR __ClusterValue = 
+					LOOKUPVALUE(
+						'ClusterMappingTable'[ClusterId],
+						'ClusterMappingTable'[Product_Name],
+						'Product'[Product Name]
+					)
+				
+				RETURN
+					SWITCH(
+						__ClusterValue,
+						1,
+						"Low Volume Core",
+						2,
+						"High Volume Core",
+						3,
+						"Loss Drivers",
+						4,
+						"Star Products",
+						5,
+						"Volume Fillers",
+						6,
+						"Contributors",
+						BLANK(),
+						BLANK(),
+						CONCATENATE("Cluster", __ClusterValue)
+					)
+				```
+			lineageTag: 52c73ad1-c227-4a75-9fc2-ece69397715a
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata =
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "Product"
+					          }
+					        },
+					        "Property": "Product Name"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"Product"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Product Name"}}],"PartitionTable":{"Definition":{"TableDefinition":{"Version":2,"From":[{"Name":"_","Entity":"_Key Metrics"},{"Name":"p","Entity":"Product"},{"Name":"d","Entity":"DateTable"}],"Where":[{"Condition":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"d"}},"Property":"Year"}}],"Values":[[{"Literal":{"Value":"2025L"}}]]}}}],"OrderBy":[],"Select":[{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"Product.Product Name"},"Name":"Product.Product Name"},{"Column":{"Expression":{"TransformTableRef":{"Source":"output0"}},"Property":"clusterId"},"Name":"clusterId"}],"GroupBy":[],"Transform":[{"Name":"KMeansClustering","Algorithm":"KMeansClustering","Input":{"Parameters":[{"Literal":{"Value":"6L"},"Name":"NumberOfClusters"}],"Table":{"Name":"input0","Columns":[{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"_"}},"Property":"Net Revenue"},"Name":"_Key Metrics.Net Revenue"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"_"}},"Property":"Total Profit"},"Name":"_Key Metrics.Total Profit"}},{"Role":"Attribute","Expression":{"Measure":{"Expression":{"SourceRef":{"Source":"_"}},"Property":"Quantity Sold"},"Name":"_Key Metrics.Quantity Sold"}},{"Role":"Item","Expression":{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Product Name"},"Name":"Product.Product Name"}}]}},"Output":{"Table":{"Name":"output0","Columns":[{"Expression":{"Column":{"Expression":{"TransformTableRef":{"Source":"input0"}},"Property":"Product.Product Name"},"Name":"Product.Product Name"}},{"Role":"Series","Expression":{"TransformOutputRoleRef":{"Role":"ClusterId"},"Name":"clusterId"}}]}}}]},"ItemIdColumns":["Product.Product Name"],"PartitionIdColumn":"clusterId","Partitions":[{"DisplayName":"Low Volume Core","PartitionIds":[{"Literal":{"Value":"1L"}}]},{"DisplayName":"High Volume Core","PartitionIds":[{"Literal":{"Value":"2L"}}]},{"DisplayName":"Loss Drivers","PartitionIds":[{"Literal":{"Value":"3L"}}]},{"DisplayName":"Star Products","PartitionIds":[{"Literal":{"Value":"4L"}}]},{"DisplayName":"Volume Fillers","PartitionIds":[{"Literal":{"Value":"5L"}}]},{"DisplayName":"Contributors","PartitionIds":[{"Literal":{"Value":"6L"}}]},{"PartitionIds":[{"Literal":{"Value":"null"}}]}],"DefaultPartitionPrefix":"Cluster"},"Result":{"TableName":"ClusterMappingTable","PartitionIdColumn":"ClusterId","ItemIdMappings":[[{"PartitionTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"ClusterMappingTable"}},"Property":"Product_Name"}},"SourceTableColumn":{"Column":{"Expression":{"SourceRef":{"Entity":"Product"}},"Property":"Product Name"}}}]]}}}
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Product = m
+			mode: import
+			source =
+					let
+					    Source = Csv.Document(File.Contents("C:\Users\ZEMI\Documents\Data\Power BI\Projects\Superstore\Superstore_Prod.csv"),[Delimiter=",", Columns=27, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+					    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Row ID", Int64.Type}, {"Order ID", type text}, {"Order Date", type date}, {"Ship Date", type date}, {"Ship Mode", type text}, {"Customer ID", type text}, {"Customer Name", type text}, {"Segment", type text}, {"Country", type text}, {"City", type text}, {"State", type text}, {"Postal Code", Int64.Type}, {"Region", type text}, {"Product ID", type text}, {"Category", type text}, {"Sub-Category", type text}, {"Product Name", type text}, {"Price per Unit", type number}, {"Cost per Unit", type number}, {"Quantity", Int64.Type}, {"Gross Sales", type number}, {"Discount %", type number}, {"Discounted Value", type number}, {"Net Sales", type number}, {"COGS", type number}, {"Shipping Cost", Int64.Type}, {"Profit", type number}}),
+					    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Profit", "Profit"}}),
+					    #"Removed Other Columns" = Table.SelectColumns(#"Renamed Columns",{"Product ID", "Category", "Sub-Category", "Product Name"}),
+					    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns", {"Product ID"}),
+					    #"Removed Columns" = Table.RemoveColumns(#"Removed Duplicates",{"Category"})
+					in
+					    #"Removed Columns"
+
+		annotation PBI_NavigationStepName = Navigation
+
+		annotation PBI_ResultType = Table

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Blinkit Sales Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "da00f54a-9cf5-449e-b120-d3acaa2dea2c"
+  }
+}

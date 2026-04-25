@@ -1,0 +1,53 @@
+createOrReplace
+
+	ref table 'Model Tables'
+
+		partition 'Model Tables' = calculated
+			mode: import
+			source = ```
+				ADDCOLUMNS(
+					SELECTCOLUMNS(
+						INFO.VIEW.TABLES(),
+						"ID", [ID],
+						"Name", [Name],
+						"Model", [Model],
+						"DataCategory", [DataCategory],
+						"IsHidden", [IsHidden],
+						"StorageMode", [StorageMode],
+						"TableStorage", [TableStorage],
+						"Expression", [Expression],
+						"ShowAsVariationOnly", [ShowAsVariationOnly],
+						"IsPrivate", [IsPrivate],
+						"CalculationGroupPrecedence", [CalculationGroupPrecedence],
+						"LineageTag", [LineageTag]
+					),
+					"Description", SWITCH(
+						[Name],
+					"Sales", "Fact table containing transactional sales data including revenue, cost, profit, quantity and shipping",
+					"DateTable", "Calculated date dimension table with year, quarter, month, day and weekend columns generated via CALENDARAUTO()",
+					"Product", "Dimension table containing product details including category, sub-category and product name",
+					"Customer", "Dimension table containing customer details including region, state, city and segment",
+					"_Key Metrics", "Hidden placeholder table hosting the main key metric measures (revenue, profit, cost, orders, etc.)",
+					"Model Measures", "Metadata table returning measure-level details for all tables in the model via INFO.VIEW.MEASURES()",
+					"_Other Measures", "Hidden placeholder table hosting secondary and supporting measures",
+					"TimeFilter", "Parameter table providing time period filter options (YTD, QTD, MTD) for dynamic measures",
+					"Parameter", "Field parameter table allowing dynamic switching between key metrics (Revenue, Profit, Margin, Cost, Shipping)",
+					"ClusterMappingTable", "Calculated table using K-Means clustering to group products by Net Revenue, Total Profit and Quantity Sold (2025)",
+					"Target_Table", "Table containing annual targets for revenue, profit, orders and other key metrics",
+					"Subcategory", "Dimension table containing product category and sub-category hierarchy",
+					"Summary Statistics", "Helper table providing aggregation options (e.g. Value, Average) for the dynamic matrix visual",
+					"Word Cloud", "Field parameter table mapping word cloud display options to their corresponding key metrics",
+					"ClusterMappingTable 2", "Calculated table using K-Means clustering to group cities by Total Profit, Net Revenue and Orders (2025)",
+					"Dimension Switcher", "Field parameter table allowing dynamic switching between customer and product dimensions in visuals",
+					"Tariff Rate", "Calculated table generating a series of tariff rate values from 0% to 100% in steps of 10",
+					"WaterfallSteps", "Helper table defining the steps and labels used in the tariff impact waterfall chart",
+					"Price Increase Rate", "Calculated table generating a series of price increase rate values from 0% to 100% in steps of 10",
+					"Scenarios", "Parameter table storing tariff rate and price increase scenario combinations for what-if analysis",
+					"Model Tables", "Metadata table returning table-level details for all tables in the model via INFO.VIEW.TABLES()",
+					"Model Columns", "Metadata table returning column-level details for all tables in the model via INFO.VIEW.COLUMNS()",
+					"Model Relationships", "Metadata table returning relationship details between tables in the model via INFO.VIEW.RELATIONSHIPS()",
+					"Data Dictionary", "Calculated table aggregating column and measure metadata from the model for documentation purposes",
+						"No description available"
+					)
+				)
+				```

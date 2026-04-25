@@ -1,0 +1,5 @@
+{
+  "objectId": "",
+  "type": 4,
+  "explorationState": "{\"version\":\"1.8\",\"activeSection\":\"\",\"sections\":{\"21dd967b652d00ed800c\":{\"visualContainers\":{\"3e39e34a4d1254c8c8d4\":{\"singleVisual\":{\"visualType\":\"cardVisual\",\"mobileObjects\":{\"value\":[],\"label\":[],\"layout\":[{\"properties\":{\"orientation\":{\"expr\":{\"Literal\":{\"Value\":\"1D\"}}}}}],\"accentBar\":[],\"shapeCustomRectangle\":[],\"shadowCustom\":[],\"glowCustom\":[],\"fillCustom\":[],\"divider\":[],\"outline\":[],\"image\":[],\"padding\":[],\"spacing\":[],\"referenceLabelLayout\":[],\"referenceLabel\":[],\"referenceLabelTitle\":[],\"referenceLabelValue\":[],\"referenceLabelDetail\":[],\"cardCalloutArea\":[],\"border\":[]}}}}}}}"
+}

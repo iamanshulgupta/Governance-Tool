@@ -1,0 +1,22 @@
+createOrReplace
+
+	ref table 'Model Relationships'
+
+		partition 'Model Relationships' = calculated
+			mode: import
+			source = ```
+				ADDCOLUMNS(
+					INFO.VIEW.RELATIONSHIPS(),
+					"Description", SWITCH(
+						[Name],
+					"'Product'[Sub-Category] *[<-]1 'Subcategory'[Sub-Category]", "Many-to-one relationship linking Product sub-category to the Subcategory dimension table",
+					"'Sales'[Customer ID] *[<-]1 'Customer'[Customer ID]", "Many-to-one relationship linking Sales transactions to the Customer dimension table",
+					"'Sales'[Order Date] *[<-]1 'DateTable'[Date]", "Many-to-one relationship linking Sales order date to the DateTable date dimension",
+					"'Sales'[Product ID] *[<-]1 'Product'[Product ID]", "Many-to-one relationship linking Sales transactions to the Product dimension table",
+					"'Sales'[Ship Date] *[<-]1 'DateTable'[Date]", "Many-to-one inactive relationship linking Sales ship date to the DateTable date dimension",
+					"'Target_Table'[Start of Month] *[<-]1 'DateTable'[Date]", "Many-to-one relationship linking Target Table month start date to the DateTable date dimension",
+					"'Target_Table'[Sub-Category] *[<-]1 'Subcategory'[Sub-Category]", "Many-to-one relationship linking Target Table sub-category to the Subcategory dimension table",
+						"No description available"
+					)
+				)
+				```

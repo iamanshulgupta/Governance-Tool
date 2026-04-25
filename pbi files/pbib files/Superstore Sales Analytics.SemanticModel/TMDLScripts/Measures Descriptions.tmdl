@@ -1,0 +1,2117 @@
+createOrReplace
+
+	ref table '_Key Metrics'
+
+		/// Year-over-year percentage change in Adjusted Revenue compared to the same period last year
+		measure 'Adjussted Revenue YoY %' = ```
+				
+				VAR CurrentRevenue = [Adjusted Revenue]
+				VAR PriorRevenue = CALCULATE([Adjusted Revenue], DATEADD(DateTable[Date], -1, YEAR))
+				RETURN
+				IF(
+				    NOT ISBLANK(CurrentRevenue) && ISBLANK(PriorRevenue), 
+				    1, 
+				    DIVIDE(CurrentRevenue - PriorRevenue, PriorRevenue)
+				)
+				```
+			formatString: 0.00%
+			displayFolder: Tariffs
+			lineageTag: f5b1d4c0-c857-47dc-8f1e-f9dc2ddbd894
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG sparkline chart showing monthly trend of Adjusted Profit Margin %
+		measure 'Adjusted Profit Margin % Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE('DateTable', DateTable[Year], DateTable[Month]),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyProfit", CALCULATE([Adjusted Profit]),
+				        "MonthlyRevenue", CALCULATE([Adjusted Revenue])
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, DIVIDE([MonthlyProfit], [MonthlyRevenue]))
+				VAR YMaxValue = MAXX(MonthlyTable, DIVIDE([MonthlyProfit], [MonthlyRevenue]))
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "MonthlyProfitMargin", DIVIDE([MonthlyProfit], [MonthlyRevenue]),
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE(DIVIDE([MonthlyProfit], [MonthlyRevenue]) - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Tariffs
+			lineageTag: 72816555-2ba1-4bdf-b69a-b4dec40ade55
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Adjusted Profit Margin % gap vs target displayed with up/down arrow indicator
+		measure 'Adjusted Profit Margin % Target Gap with Arrow' = ```
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				VAR square = UNICHAR(9209)
+				
+				VAR profitmargingap = [Profit Margin % Target Gap]
+				
+				RETURN
+				IF(
+				    profitmargingap < 0,
+				    FORMAT(profitmargingap, "0.00 %") & " " & downarrow,
+				    FORMAT(profitmargingap, "0.00 %") & " " & uparrow
+				)
+				
+				```
+			displayFolder: Tariffs
+			lineageTag: afcc5ead-6dba-44f0-8c63-d0137e63e9b9
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Year-over-year change in Adjusted Profit Margin % compared to prior year
+		measure 'Adjusted Profit Margin YoY %' = ```
+				
+				VAR CurrentMargin = [Adjusted Profit Margin %]
+				VAR PriorMargin = CALCULATE([Profit Margin %], DATEADD(DateTable[Date], -1, YEAR))
+				RETURN
+				IF(
+				    NOT ISBLANK(CurrentMargin) && ISBLANK(PriorMargin), 
+				    1,
+				    CurrentMargin - PriorMargin
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Tariffs
+			lineageTag: 7b711493-e04f-4145-a971-ba4df7547fa1
+
+		/// SVG sparkline chart showing monthly trend of Adjusted Profit
+		measure 'Adjusted Profit Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],
+				            DateTable[Month]
+				        ),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyProfit", CALCULATE([Adjusted Profit])
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyProfit])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyProfit])
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE([MonthlyProfit] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Tariffs
+			lineageTag: 8b06431d-fe3d-42ed-bca2-4d7169457894
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Difference between Adjusted Profit and the Profit Target
+		measure 'Adjusted Profit Target Gap' = [Adjusted Profit] - [Profit Target]
+			formatString: $#,##0
+			displayFolder: Tariffs
+			lineageTag: 24de4455-36fa-4c7a-9682-8f70213c8b3f
+
+		/// Adjusted Profit gap vs target displayed with up/down arrow indicator
+		measure 'Adjusted Profit Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR profitgap = [Adjusted Profit Target Gap]
+				
+				RETURN
+				IF(
+				    profitgap < 0,
+				    FORMAT(profitgap, "$#,###") & " " & downarrow,
+				    FORMAT(profitgap, "$#,###") & " " & uparrow
+				)
+			formatString: $#,##0
+			displayFolder: Tariffs
+			lineageTag: 18cc5744-53d9-48b9-ad5c-0b854fb60157
+
+		/// Year-over-year percentage change in Adjusted Profit compared to Total Profit last year
+		measure 'Adjusted Profit YoY %' = ```
+				
+				VAR CurrentRevenue = [Adjusted Profit]
+				VAR PriorRevenue = CALCULATE([Total Profit], DATEADD(DateTable[Date], -1, YEAR))
+				RETURN
+				IF(
+				    NOT ISBLANK(CurrentRevenue) && ISBLANK(PriorRevenue), 
+				    1, 
+				    DIVIDE(CurrentRevenue - PriorRevenue, PriorRevenue)
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Tariffs
+			lineageTag: 8ea44606-f35b-48ff-9835-a7e9a30de8cb
+
+		/// SVG sparkline chart showing monthly trend of Adjusted Revenue
+		measure 'Adjusted Revenue Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR SelectedPriceIncrease = [Scenario Price Increase]
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],
+				            DateTable[Month]
+				        ),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyRevenue", CALCULATE(
+				            [Net Revenue] * (1 + DIVIDE(SelectedPriceIncrease, 100))
+				        )
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyRevenue])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyRevenue])
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE([MonthlyRevenue] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Tariffs
+			lineageTag: 827fb856-0ebf-4c3b-872f-b2ee1de90a71
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Difference between Adjusted Revenue and the Revenue Target
+		measure 'Adjusted Revenue Target Gap' = [Adjusted Revenue] - [Revenue Target]
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			displayFolder: Tariffs
+			lineageTag: 6bab7ab5-da2f-4f0a-a9ea-c55e6e2733bb
+
+		/// Adjusted Revenue gap vs target displayed with up/down arrow indicator
+		measure 'Adjusted Revenue Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR revenuegap = [Adjusted Revenue Target Gap]
+				
+				RETURN
+				IF(
+				    revenuegap < 0,
+				    FORMAT(revenuegap, "$#,###") & " " & downarrow,
+				    FORMAT(revenuegap, "$#,###") & " " & uparrow
+				)
+			displayFolder: Tariffs
+			lineageTag: badf02d6-4be8-4ec7-8eb9-67c5d76d4337
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Year-over-year percentage change in Adjusted Revenue compared to Net Revenue last year
+		measure 'Adjusted Revenue YoY %' = ```
+				
+				VAR CurrentRevenue = [Adjusted Revenue]
+				VAR PriorRevenue = CALCULATE([Net Revenue], DATEADD(DateTable[Date], -1, YEAR))
+				RETURN
+				IF(
+				    NOT ISBLANK(CurrentRevenue) && ISBLANK(PriorRevenue), 
+				    1, 
+				    DIVIDE(CurrentRevenue - PriorRevenue, PriorRevenue)
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Tariffs
+			lineageTag: 29ec42c0-473c-45c3-91ee-de2549272156
+
+		/// Adjusted Cost gap vs target displayed with up/down arrow indicator
+		measure 'Adjusted Total Cost Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR revenuegap = [Adjusted Cost Target Gap]
+				
+				RETURN
+				IF(
+				    revenuegap < 0,
+				    FORMAT(revenuegap, "$#,###") & " " & downarrow,
+				    FORMAT(revenuegap, "$#,###") & " " & uparrow
+				)
+			displayFolder: Tariffs
+			lineageTag: afe32d1a-9651-4c02-bec1-c4641f0e17dd
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Year-over-year percentage change in Adjusted Cost compared to Total Cost last year
+		measure 'Adjusted Total Cost YoY %' = ```
+				
+				VAR CurrentCosts = [Adjusted Cost]
+				VAR PriorCosts = CALCULATE([Total Cost], DATEADD(DateTable[Date], -1, YEAR))
+				RETURN
+				IF(
+				    NOT ISBLANK(CurrentCosts) && ISBLANK(PriorCosts), 
+				    1, 
+				    DIVIDE(CurrentCosts - PriorCosts, PriorCosts)
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Tariffs
+			lineageTag: fdad7e70-7755-4d5b-a312-5f01a9dd1e60
+
+		/// Order count filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Orders' =
+				
+				VAR Selection = SELECTEDVALUE(TimeFilter[Period])
+				RETURN
+				SWITCH(
+				    Selection,
+				
+				    "YTD",
+				        CALCULATE(
+				            DISTINCTCOUNT(Sales[Order ID]),
+				            DATESYTD(DateTable[Date])
+				        ),
+				
+				    "QTD",
+				        CALCULATE(
+				            DISTINCTCOUNT(Sales[Order ID]),
+				            DATESQTD(DateTable[Date])
+				        ),
+				
+				    "MTD",
+				        CALCULATE(
+				            DISTINCTCOUNT(Sales[Order ID]),
+				            DATESMTD(DateTable[Date])
+				        ),
+				
+				    DISTINCTCOUNT(Sales[Order ID])
+				)
+			formatString: 0
+			displayFolder: Orders
+			lineageTag: 471af660-b7c7-470e-8493-9a473f36f5e9
+
+		/// Orders target filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Orders Target' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				RETURN
+				SWITCH(
+				    SelectedPeriod,
+				    "YTD", CALCULATE(SUM('Target_Table'[Orders Target]), 
+				                DATESYTD(DateTable[Date])),
+				    "QTD", CALCULATE(SUM('Target_Table'[Orders Target]), 
+				                DATESQTD(DateTable[Date])),
+				    "MTD", CALCULATE(SUM('Target_Table'[Orders Target]), 
+				                DATESMTD(DateTable[Date]))
+				)
+				```
+			formatString: 0
+			displayFolder: Orders
+			lineageTag: 4a0ccc63-345b-4589-8997-ab03b4847ffc
+
+		/// Difference between Dynamic Orders and the Dynamic Orders Target
+		measure 'Dynamic Orders Target Gap' = ```
+				[Dynamic Orders]-[Dynamic Orders Target] 
+				```
+			formatString: 0
+			displayFolder: Orders
+			lineageTag: 703f5bfc-00b1-4846-8ba0-3ecede8c2d85
+
+		/// Dynamic Orders gap vs target displayed with up/down arrow indicator
+		measure 'Dynamic Orders Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR ordersgap = [Dynamic Orders Target Gap]
+				
+				RETURN
+				IF(
+				    ordersgap < 0,
+				    FORMAT(ordersgap, "#") & " " & downarrow,
+				    FORMAT(ordersgap, "#") & " " & uparrow
+				)
+			displayFolder: Orders
+			lineageTag: 539c5c56-71bf-4757-a820-37fbe244337d
+
+		/// Year-over-year growth percentage of Dynamic Orders for the selected time period
+		measure 'Dynamic Orders YoY Growth' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				
+				VAR CurrentVal = [Dynamic Orders]
+				
+				VAR PriorYearVal = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", CALCULATE([Dynamic Orders], SAMEPERIODLASTYEAR(DATESMTD('DateTable'[Date]))),
+				        "QTD", CALCULATE([Dynamic Orders], SAMEPERIODLASTYEAR(DATESQTD('DateTable'[Date]))),
+				        "YTD", CALCULATE([Dynamic Orders], SAMEPERIODLASTYEAR(DATESYTD('DateTable'[Date])))
+				    )
+				
+				RETURN
+				DIVIDE(CurrentVal - PriorYearVal, PriorYearVal, 0)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Orders
+			lineageTag: df938a86-6c4f-42b8-9efa-3cf67f42e064
+
+		/// Total Profit filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Profit' =
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				RETURN
+				SWITCH( SelectedPeriod,
+				    "MTD", TOTALMTD([Total Profit], 'DateTable'[Date]),
+				    "QTD", TOTALQTD([Total Profit], 'DateTable'[Date]),
+				    "YTD", TOTALYTD([Total Profit], 'DateTable'[Date])
+				)
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Profit
+			lineageTag: 70c7e928-4523-4d48-bf37-0bf49e35ae47
+
+		/// Profit Margin % calculated dynamically for the selected YTD, QTD, or MTD period
+		measure 'Dynamic Profit Margin %' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				
+				VAR PeriodProfit = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", TOTALMTD([Total Profit], 'DateTable'[Date]),
+				        "QTD", TOTALQTD([Total Profit], 'DateTable'[Date]),
+				        "YTD", TOTALYTD([Total Profit], 'DateTable'[Date])
+				    )
+				
+				VAR PeriodRevenue = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", TOTALMTD([Net Revenue], 'DateTable'[Date]),
+				        "QTD", TOTALQTD([Net Revenue], 'DateTable'[Date]),
+				        "YTD", TOTALYTD([Net Revenue], 'DateTable'[Date])
+				    )
+				
+				RETURN
+				DIVIDE(PeriodProfit, PeriodRevenue)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit Margin %
+			lineageTag: 84ea06bc-36f1-442b-9185-eedb1f4d80c5
+
+		/// Profit Margin % target filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Profit Margin % Target' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				RETURN
+				SWITCH(
+				    SelectedPeriod,
+				    "YTD", CALCULATE(AVERAGE('Target_Table'[Profit Margin Target]), 
+				                DATESYTD(DateTable[Date])),
+				    "QTD", CALCULATE(AVERAGE('Target_Table'[Profit Margin Target]), 
+				                DATESQTD(DateTable[Date])),
+				    "MTD", CALCULATE(AVERAGE('Target_Table'[Profit Margin Target]), 
+				                DATESMTD(DateTable[Date]))
+				)
+				
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit Margin %
+			lineageTag: 8aa586d4-8cd7-4b92-889a-3b15d1850344
+
+		/// Difference between Dynamic Profit Margin % and its target for the selected period
+		measure 'Dynamic Profit Margin % Target Gap' = ```
+				[Dynamic Profit Margin %]-[Dynamic Profit Margin % Target] 
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit Margin %
+			lineageTag: 42c04d8f-965b-4aae-a4f5-50de41b18a14
+
+		/// Dynamic Profit Margin % gap vs target displayed with up/down arrow indicator
+		measure 'Dynamic Profit Margin % Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				VAR square = UNICHAR(9209)
+				
+				VAR profitmargingap = [Dynamic Profit Margin %] - [Dynamic Profit Margin % Target]
+				
+				RETURN
+				IF(
+				    profitmargingap < 0,
+				    FORMAT(profitmargingap, "0.00 %") & " " & downarrow,
+				    FORMAT(profitmargingap, "0.00 %") & " " & uparrow
+				)
+			displayFolder: Profit Margin %
+			lineageTag: 12dc8ecf-cda1-4407-ad99-fabc746a6f6a
+
+		/// Year-over-year growth percentage of Dynamic Profit Margin % for the selected time period
+		measure 'Dynamic Profit Margin YoY Growth' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				
+				VAR CurrentMargin = [Dynamic Profit Margin %]
+				
+				VAR PriorYearMargin = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", CALCULATE([Profit Margin %], SAMEPERIODLASTYEAR(DATESMTD('DateTable'[Date]))),
+				        "QTD", CALCULATE([Profit Margin %], SAMEPERIODLASTYEAR(DATESQTD('DateTable'[Date]))),
+				        "YTD", CALCULATE([Profit Margin %], SAMEPERIODLASTYEAR(DATESYTD('DateTable'[Date])))
+				    )
+				
+				RETURN
+				CurrentMargin - PriorYearMargin
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit Margin %
+			lineageTag: d8fc012a-539a-49c6-83bb-e136c61cc117
+
+		/// Profit target filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Profit Target' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				RETURN
+				SWITCH(
+				    SelectedPeriod,
+				    "YTD", CALCULATE(SUM('Target_Table'[Profit Target]), 
+				                DATESYTD(DateTable[Date])),
+				    "QTD", CALCULATE(SUM('Target_Table'[Profit Target]), 
+				                DATESQTD(DateTable[Date])),
+				    "MTD", CALCULATE(SUM('Target_Table'[Profit Target]), 
+				                DATESMTD(DateTable[Date]))
+				)
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Profit
+			lineageTag: 5edaa411-bbdc-4b58-8ad4-21bcfeee2ac5
+
+		/// Difference between Dynamic Profit and the Dynamic Profit Target
+		measure 'Dynamic Profit Target Gap' = ```
+				[Dynamic Profit]-[Dynamic Profit Target] 
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Profit
+			lineageTag: 2e4a7be9-b110-4a3e-b7cb-8ef357e54c97
+
+		/// Dynamic Profit gap vs target displayed with up/down arrow indicator
+		measure 'Dynamic Profit Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR profitgap = [Dynamic Profit Target Gap]
+				
+				RETURN
+				IF(
+				    profitgap < 0,
+				    FORMAT(profitgap, "$#,###") & " " & downarrow,
+				    FORMAT(profitgap, "$#,###") & " " & uparrow
+				)
+			displayFolder: Profit
+			lineageTag: f88cf47e-6a76-41b1-8718-5a8abf549bf4
+
+		/// Year-over-year growth percentage of Dynamic Profit for the selected time period
+		measure 'Dynamic Profit YoY Growth' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				
+				VAR CurrentVal = [Dynamic Profit]
+				
+				VAR PriorYearVal = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", CALCULATE([Dynamic Profit], SAMEPERIODLASTYEAR(DATESMTD('DateTable'[Date]))),
+				        "QTD", CALCULATE([Dynamic Profit], SAMEPERIODLASTYEAR(DATESQTD('DateTable'[Date]))),
+				        "YTD", CALCULATE([Dynamic Profit], SAMEPERIODLASTYEAR(DATESYTD('DateTable'[Date])))
+				    )
+				
+				RETURN
+				DIVIDE(CurrentVal - PriorYearVal, PriorYearVal, 0)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit
+			lineageTag: e7f8abb7-415b-4c69-bbcf-a72831daff1c
+
+		/// Revenue that dynamically changes based on YTD, QTD and MTD parameter
+		measure 'Dynamic Revenue' = ```
+				
+				VAR Selection = SELECTEDVALUE(TimeFilter[Period])
+				VAR Result = 
+				    SWITCH(
+				        Selection,
+				        "YTD", CALCULATE([Net Revenue], DATESYTD(DateTable[Date])),
+				        "QTD", CALCULATE([Net Revenue], DATESQTD(DateTable[Date])),
+				        "MTD", CALCULATE([Net Revenue], DATESMTD(DateTable[Date]))
+				    )
+				RETURN
+				Result
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Revenue
+			lineageTag: ed594321-8f83-4196-b3fb-9a5a59338768
+
+		/// Revenue target filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Revenue Target' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				RETURN
+				SWITCH(
+				    SelectedPeriod,
+				    "YTD", CALCULATE(SUM('Target_Table'[Revenue Target]), 
+				                DATESYTD(DateTable[Date])),
+				    "QTD", CALCULATE(SUM('Target_Table'[Revenue Target]), 
+				                DATESQTD(DateTable[Date])),
+				    "MTD", CALCULATE(SUM('Target_Table'[Revenue Target]), 
+				                DATESMTD(DateTable[Date]))
+				)
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Revenue
+			lineageTag: 6115e761-b735-483e-b3cc-934d10291736
+
+		/// Difference between Dynamic Revenue and the Dynamic Revenue Target
+		measure 'Dynamic Revenue Target Gap' = ```
+				[Dynamic Revenue]-[Dynamic Revenue Target] 
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Revenue
+			lineageTag: 18e9b0bd-8881-4f87-a4ee-618254c27ebf
+
+		/// Dynamic Revenue gap vs target displayed with up/down arrow indicator
+		measure 'Dynamic Revenue Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR revenuegap = [Dynamic Revenue Target Gap]
+				
+				RETURN
+				IF(
+				    revenuegap < 0,
+				    FORMAT(revenuegap, "$#,###") & " " & downarrow,
+				    FORMAT(revenuegap, "$#,###") & " " & uparrow
+				)
+			displayFolder: Revenue
+			lineageTag: 94864351-dd01-484d-b27d-f1a4d3351eaf
+
+		/// Year-over-year growth percentage of Dynamic Revenue for the selected time period
+		measure 'Dynamic Revenue YoY Growth' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				
+				VAR CurrentVal = [Dynamic Revenue]
+				
+				VAR PriorYearVal = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", CALCULATE([Net Revenue], SAMEPERIODLASTYEAR(DATESMTD('DateTable'[Date]))),
+				        "QTD", CALCULATE([Net Revenue], SAMEPERIODLASTYEAR(DATESQTD('DateTable'[Date]))),
+				        "YTD", CALCULATE([Net Revenue], SAMEPERIODLASTYEAR(DATESYTD('DateTable'[Date])))
+				    )
+				
+				RETURN
+				DIVIDE(CurrentVal - PriorYearVal, PriorYearVal, 0)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Revenue
+			lineageTag: f2214ee1-fd00-4b48-8c96-ece5a011e453
+
+		/// Total Cost filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Total Cost' = ```
+				
+				VAR Selection = SELECTEDVALUE(TimeFilter[Period])
+				VAR Result = 
+				    SWITCH(
+				        Selection,
+				        "YTD", CALCULATE([Total Cost], DATESYTD(DateTable[Date])),
+				        "QTD", CALCULATE([Total Cost], DATESQTD(DateTable[Date])),
+				        "MTD", CALCULATE([Total Cost], DATESMTD(DateTable[Date]))
+				    )
+				RETURN
+				Result
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Total Cost
+			lineageTag: 27435b93-fd74-47c8-8f38-50ea7f9bf319
+
+		/// Total Cost target filtered dynamically by YTD, QTD, or MTD based on TimeFilter selection
+		measure 'Dynamic Total Cost Target' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				RETURN
+				SWITCH(
+				    SelectedPeriod,
+				    "YTD", CALCULATE(SUM('Target_Table'[Total Costs Target]), 
+				                DATESYTD(DateTable[Date])),
+				    "QTD", CALCULATE(SUM('Target_Table'[Total Costs Target]), 
+				                DATESQTD(DateTable[Date])),
+				    "MTD", CALCULATE(SUM('Target_Table'[Total Costs Target]), 
+				                DATESMTD(DateTable[Date]))
+				)
+				```
+			formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+			displayFolder: Total Cost
+			lineageTag: 09618731-a411-45a1-ac45-c30b3275008f
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+		/// Difference between Dynamic Total Cost and the Dynamic Total Cost Target
+		measure 'Dynamic Total Cost Target Gap' = ```
+				[Dynamic Total Cost]-[Dynamic Total Cost Target] 
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Total Cost
+			lineageTag: f718e8bd-a2d6-4294-8136-1ff4e28a00a0
+
+		/// Dynamic Total Cost gap vs target displayed with up/down arrow indicator
+		measure 'Dynamic Total Cost Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR revenuegap = [Dynamic Total Cost Target Gap]
+				
+				RETURN
+				IF(
+				    revenuegap < 0,
+				    FORMAT(revenuegap, "$#,###") & " " & downarrow,
+				    FORMAT(revenuegap, "$#,###") & " " & uparrow
+				)
+			displayFolder: Total Cost
+			lineageTag: a118c51d-b462-4e26-acb9-54d3071d4c57
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Year-over-year percentage change in Dynamic Total Cost using SAMEPERIODLASTYEAR
+		measure 'Dynamic Total Cost YoY %' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				
+				VAR CurrentVal = [Dynamic Total Cost]
+				
+				VAR PriorYearVal = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", CALCULATE([Total Cost], SAMEPERIODLASTYEAR(DATESMTD('DateTable'[Date]))),
+				        "QTD", CALCULATE([Total Cost], SAMEPERIODLASTYEAR(DATESQTD('DateTable'[Date]))),
+				        "YTD", CALCULATE([Total Cost], SAMEPERIODLASTYEAR(DATESYTD('DateTable'[Date])))
+				    )
+				
+				RETURN
+				DIVIDE(CurrentVal - PriorYearVal, PriorYearVal, 0)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Total Cost
+			lineageTag: d8bd7032-ecc0-4c01-946d-c51dbdebf84e
+
+		/// Year-over-year percentage change in Dynamic Total Cost using DATEADD approach
+		measure 'Dynamic Total Cost YoY %  DATEADD' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				
+				VAR CurrentVal = [Dynamic Total Cost]
+				
+				VAR PriorYearVal = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", CALCULATE([Total Cost], DATESMTD(DATEADD('DateTable'[Date], -1, YEAR))),
+				        "QTD", CALCULATE([Total Cost], DATESQTD(DATEADD('DateTable'[Date], -1, YEAR))),
+				        "YTD", CALCULATE([Total Cost], DATESYTD(DATEADD('DateTable'[Date], -1, YEAR)))
+				    )
+				
+				RETURN
+				DIVIDE(CurrentVal - PriorYearVal, PriorYearVal, 0)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Total Cost
+			lineageTag: 2639b112-ef2f-4d40-b23f-d661b510857a
+
+		/// Sum of gross sales before discounts
+		measure 'Gross Revenue' = Sum(Sales[Gross Sales])
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Revenue
+			lineageTag: 4a1ac705-2d6d-4ef7-866a-506f25d8b7e4
+
+		/// Sum of net sales after discounts
+		measure 'Net Revenue' = sum(Sales[Net Sales])
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Revenue
+			lineageTag: 2466c363-4acf-4a0c-bd62-94aaa915ff49
+
+			annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Product Clusters","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Customer","TableItemName":"City Cluster","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		/// Distinct count of Order IDs
+		measure 'Orders Count' = DISTINCTCOUNT(Sales[Order ID])
+			formatString: 0
+			displayFolder: Orders
+			lineageTag: 69da5f85-10d8-4369-a072-e2cf70258fa5
+
+		/// SVG sparkline chart showing monthly trend of Orders Count
+		measure 'Orders Count Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],
+				            DateTable[Month]
+				        ),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyOrdersCount", CALCULATE([Orders Count])
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyOrdersCount])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyOrdersCount])
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE([MonthlyOrdersCount] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Orders
+			lineageTag: 883a3080-87a3-4b3b-9d65-27e762a6be71
+
+		/// SVG progress bar showing Dynamic Orders achievement vs target by sub-category
+		measure 'Orders Progress' = ```
+				
+				VAR Actual = [Dynamic Orders]
+				VAR Target = [Dynamic Orders Target]
+				VAR ProgressRatio = DIVIDE(Actual, Target)
+				VAR PERCENTAGEFILL = MIN(ProgressRatio*100, 100) 
+				
+				
+				VAR BarColour = "#FFD700" 
+				VAR TextColour = "#FFFFFF" 
+				VAR TrackColour = "#404040"
+				
+				RETURN
+				IF(ISINSCOPE('Subcategory'[Sub-Category]),
+				"data:image/svg+xml;utf8," & 
+				"<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg' display='block' overflow='visible'>
+				<rect id='track' x='0' y='12' width='100' height='6' rx='3' fill='" & TrackColour & "' />
+				<rect id='fill' x='0' y='12' width='" & PERCENTAGEFILL & "' height='6' rx='3' fill='" & BarColour & "'></rect>
+				<text x='0' y='8' font-size='10' font-weight='bold' font-family='Segoe UI, sans-serif' fill='" & TextColour & "'>" & FORMAT(ProgressRatio, "0%") & "</text>
+				</svg>"
+				, BLANK())
+				```
+			displayFolder: Orders
+			lineageTag: a7d2e9a8-7e70-4abf-9c97-823892813d52
+			dataCategory: ImageUrl
+
+		/// SVG progress bar (v2 with colour coding) showing Dynamic Orders achievement vs target
+		measure 'Orders Progress V2' =
+				
+				VAR Actual = [Dynamic Orders]
+				VAR Target = [Dynamic Orders Target]
+				VAR ProgressRatio = DIVIDE(Actual, Target)
+				
+				
+				VAR PERCENTAGEAXIS = MIN(ProgressRatio * 50, 100)
+				VAR PERCENTAGETARGET = 50
+				
+				VAR BarColour = IF(ProgressRatio < 0.50, "#FF4444", IF(ProgressRatio < 1.0, "#FFD700", "#4CAF50"))
+				VAR TextColour = "#FFFFFF"
+				VAR TrackColour = "#404040"
+				
+				RETURN
+				IF(ISINSCOPE('Product'[Sub-Category]),
+				"data:image/svg+xml;utf8," &
+				"<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg' display='block' overflow='visible'>
+				<rect id='track' x='0' y='12' width='100' height='6' rx='3' fill='" & TrackColour & "' />
+				<rect id='fill' x='0' y='12' width='" & PERCENTAGEAXIS & "' height='6' rx='3' fill='" & BarColour & "'></rect>
+				<rect id='target' x='" & PERCENTAGETARGET & "' y='10' width='2' height='10' fill='#FFFFFF'/>
+				<text x='0' y='8' font-size='10' font-weight='bold' font-family='Segoe UI, sans-serif' fill='" & TextColour & "'>" & FORMAT(ProgressRatio, "0%") & "</text>
+				</svg>"
+				, BLANK())
+			displayFolder: Orders
+			lineageTag: fbb81dee-bbd9-4e11-befb-37a31984853d
+			dataCategory: ImageUrl
+
+		/// Total count of all order records
+		measure 'Orders Total' = COUNT(Sales[Order ID])
+			formatString: 0
+			displayFolder: Orders
+			lineageTag: 05c6f803-5e01-4549-8678-ad33a4df6d9e
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Customer","TableItemName":"City Cluster","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		/// Net profit margin calculated as Total Profit divided by Net Revenue
+		measure 'Profit Margin %' = DIVIDE([Total Profit],[Net Revenue])
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit Margin %
+			lineageTag: 56263d22-9b67-4c37-b68f-2ceec948ca06
+
+		/// 3-month moving average of Profit Margin %
+		measure 'Profit Margin % 3M MA' =
+				
+				CALCULATE(
+				    [Profit Margin %],
+				    DATESINPERIOD(
+				        DateTable[Date],
+				        MAX(DateTable[Date]),
+				        -3,
+				        MONTH
+				    )
+				)
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit Margin %
+			lineageTag: be39380d-4a38-4a07-8059-f9bdfa21aa0d
+
+		/// SVG progress bar showing Dynamic Profit Margin % achievement vs target by sub-category
+		measure 'Profit Margin % Progress' = ```
+				
+				VAR Actual = [Dynamic Profit Margin %]
+				VAR Target = [Dynamic Profit Margin % Target]
+				VAR ProgressRatio = DIVIDE(Actual, Target)
+				VAR PERCENTAGEFILL = MIN(ProgressRatio * 100, 100) 
+				
+				
+				VAR BarColour = "#FFD700" 
+				VAR TextColour = "#FFFFFF" 
+				VAR TrackColour = "#404040" 
+				
+				RETURN
+				IF(ISINSCOPE('Subcategory'[Sub-Category]),
+				"data:image/svg+xml;utf8," & 
+				"<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg' display='block' overflow='visible'>
+				<rect id='track' x='0' y='12' width='100' height='6' rx='3' fill='" & TrackColour & "' />
+				<rect id='fill' x='0' y='12' width='" & PERCENTAGEFILL & "' height='6' rx='3' fill='" & BarColour & "'></rect>
+				<text x='0' y='8' font-size='10' font-weight='bold' font-family='Segoe UI, sans-serif' fill='" & TextColour & "'>" & FORMAT(ProgressRatio, "0%") & "</text>
+				</svg>"
+				, BLANK())
+				```
+			formatString: 0.00%
+			displayFolder: Profit Margin %
+			lineageTag: 330f00ce-99d6-4dc3-a50b-da23bd54a320
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG sparkline chart showing monthly trend of Profit Margin %
+		measure 'Profit Margin % Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],
+				            DateTable[Month]
+				        ),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyProfitMargin", CALCULATE([Profit Margin %])
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyProfitMargin])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyProfitMargin])
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE([MonthlyProfitMargin] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Profit Margin %
+			lineageTag: b86155bc-d791-4ac7-b1ae-930019e9c950
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Average Profit Margin % target from the Target Table
+		measure 'Profit Margin % Target' = AVERAGE(Target_Table[Profit Margin Target])
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Profit Margin %
+			lineageTag: 78c4e1f1-15bb-4329-977e-0bf7aac98711
+
+		/// Difference between Adjusted Profit Margin % and the Profit Margin % Target
+		measure 'Profit Margin % Target Gap' = [Adjusted Profit Margin %] - [Profit Margin % Target]
+			formatString: 0.00%
+			displayFolder: Profit Margin %
+			lineageTag: 70f51e47-5b2c-4222-9b70-e412dccf4d3a
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Monthly apportionment of the annual Profit Target (divided by 12)
+		measure 'Profit Monthly Target' = DIVIDE([Profit Target],12,0)
+			formatString: $#,##0
+			displayFolder: Profit
+			lineageTag: df1a84f3-194c-469e-88c2-582136c4b261
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG progress bar showing Dynamic Profit achievement vs target by sub-category
+		measure 'Profit Progress' = ```
+				
+				VAR Actual = [Dynamic Profit]
+				VAR Target = [Dynamic Profit Target]
+				VAR ProgressRatio = DIVIDE(Actual, Target)
+				VAR PERCENTAGEFILL = MIN(ProgressRatio * 100, 100) 
+				
+				
+				VAR BarColour = "#FFD700" 
+				VAR TextColour = "#FFFFFF" 
+				VAR TrackColour = "#404040"
+				
+				RETURN
+				IF(ISINSCOPE('Subcategory'[Sub-Category]),
+				"data:image/svg+xml;utf8," & 
+				"<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg' display='block' overflow='visible'>
+				<rect id='track' x='0' y='12' width='100' height='6' rx='3' fill='" & TrackColour & "' />
+				<rect id='fill' x='0' y='12' width='" & PERCENTAGEFILL & "' height='6' rx='3' fill='" & BarColour & "'></rect>
+				<text x='0' y='8' font-size='10' font-weight='bold' font-family='Segoe UI, sans-serif' fill='" & TextColour & "'>" & FORMAT(ProgressRatio, "0%") & "</text>
+				</svg>"
+				, BLANK())
+				```
+			displayFolder: Profit
+			lineageTag: 3a59564a-255a-43c1-9447-3ad600428b27
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG sparkline chart showing monthly trend of Total Profit
+		measure 'Profit Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],
+				            DateTable[Month]
+				        ),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyProfit", CALCULATE([Total Profit])
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyProfit])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyProfit])
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE([MonthlyProfit] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Profit Margin %
+			lineageTag: 4ebe0bd3-5e7b-46c6-a179-fb1a5ff79cfa
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Sum of profit targets from the Target Table
+		measure 'Profit Target' = ```
+				sum(Target_Table[Profit Target]) 
+				```
+			formatString: $#,##0
+			displayFolder: Profit
+			lineageTag: 2e7465cf-205f-4968-abf6-a5cd4f2c46c2
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Year-over-year percentage change in Total Profit vs same period last year
+		measure 'Profit YoY %' = ```
+				
+				VAR CurrentProfit = [Total Profit]
+				VAR PriorProfit = CALCULATE([TOtal Profit], SAMEPERIODLASTYEAR(DateTable[Date]))
+				RETURN
+				DIVIDE(CurrentProfit - PriorProfit, PriorProfit)
+				
+				
+				```
+			formatString: 0.00%
+			displayFolder: Profit
+			lineageTag: 91d9a17b-ae46-4e9e-9c7f-230bab8cf3bf
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG sparkline chart showing monthly trend of Orders Count by quantity
+		measure 'Quantity Count Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],
+				            DateTable[Month]
+				        ),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyOrdersCount", CALCULATE([Orders Count])
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyOrdersCount])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyOrdersCount])
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE([MonthlyOrdersCount] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Quantity
+			lineageTag: 9d07cb18-1926-4189-b30c-040ed4d61c12
+
+		/// Sum of quantity sold across all sales
+		measure 'Quantity Sold' = sum(Sales[Quantity])
+			formatString: 0
+			displayFolder: Quantity
+			lineageTag: 7c3daf24-55f4-420a-b913-06703e3ab46e
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Product Clusters","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		/// SVG sparkline chart showing monthly trend of Quantity Sold
+		measure 'Quantity Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable =
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],
+				            DateTable[Month]
+				        ),
+				        "MonthStart", DATE(DateTable[Year], DateTable[Month], 1),
+				        "MonthlyOrdersCount", CALCULATE([Quantity Sold])
+				    )
+				
+				VAR XMinDate = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxDate = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyOrdersCount])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyOrdersCount])
+				
+				VAR SparklineTable =
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinDate, XMaxDate - XMinDate)),
+				        "Y", INT(50 * DIVIDE([MonthlyOrdersCount] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxDate), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				     stroke-width='0' points=' 0 50 " & Lines & 
+				     " 150 150 Z '/>" &
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				     " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Quantity
+			lineageTag: 3ee62595-7e76-49bd-bf41-29fc9401cec8
+
+		/// 3-month moving average of Net Revenue
+		measure 'Revenue 3M MA' = ```
+				
+				AVERAGEX(
+				    VALUES(DateTable[Month]),  
+				    CALCULATE(
+				        [Net Revenue],
+				        DATESINPERIOD(
+				            DateTable[Date],
+				            MAX(DateTable[Date]),
+				            -3,
+				            MONTH
+				        )
+				    )
+				)
+				```
+			formatString: $#,##0
+			displayFolder: Revenue
+			lineageTag: 7862b206-4308-4b4c-89e4-b88f8efb98e2
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Month-over-month percentage change in Net Revenue
+		measure 'Revenue MoM %' =
+				
+				VAR Revenue_PM = CALCULATE([Net Revenue], DATEADD('DateTable'[Date], -1, MONTH))
+				RETURN
+				DIVIDE([Net Revenue] - Revenue_PM, Revenue_PM, 0)
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Revenue
+			lineageTag: 68294079-8138-4bce-b524-58cfd4192388
+
+		/// Monthly apportionment of the annual Revenue Target (divided by 12)
+		measure 'Revenue Monthly Target' = DIVIDE([Revenue Target],12,0)
+			formatString: $#,##0
+			displayFolder: Revenue
+			lineageTag: cb13e4a9-264e-439f-8b30-4df21fde3f89
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Net Revenue for the previous month using PREVIOUSMONTH
+		measure 'Revenue Previous Month' = CALCULATE([Net Revenue],PREVIOUSMONTH(DateTable[Date]))
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Revenue
+			lineageTag: 396ab21d-fb7c-466e-8104-2a93f3f0740b
+
+		/// SVG progress bar showing Dynamic Revenue achievement vs target by sub-category
+		measure 'Revenue Progress' = ```
+				
+				VAR Actual = [Dynamic Revenue]
+				VAR Target = [Dynamic Revenue Target]
+				VAR ProgressRatio = DIVIDE(Actual, Target)
+				VAR PERCENTAGEFILL = MIN(ProgressRatio * 100, 100) 
+				
+				VAR BarColour = "#FFD700" 
+				VAR TextColour = "#FFFFFF" 
+				VAR TrackColour = "#404040" 
+				
+				RETURN
+				IF(ISINSCOPE('Subcategory'[Sub-Category]),
+				"data:image/svg+xml;utf8," & 
+				"<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg' display='block' overflow='visible'>
+				<rect id='track' x='0' y='12' width='100' height='6' rx='3' fill='" & TrackColour & "' />
+				<rect id='fill' x='0' y='12' width='" & PERCENTAGEFILL & "' height='6' rx='3' fill='" & BarColour & "'></rect>
+				<text x='0' y='8' font-size='10' font-weight='bold' font-family='Segoe UI, sans-serif' fill='" & TextColour & "'>" & FORMAT(ProgressRatio, "0%") & "</text>
+				</svg>"
+				, BLANK())
+				```
+			displayFolder: Revenue
+			lineageTag: 85df5b53-dc2b-4a92-930e-9783a5838c9e
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG sparkline chart showing daily trend of Net Revenue
+		measure 'Revenue Sparkline Daily' = ```
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#23333333"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />   // Superstore Yellow
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' /> // Light Grey
+				    </linearGradient>
+				</defs>"
+				
+				VAR XMinDate = MIN(DateTable[Date])
+				VAR XMaxDate = MAX(DateTable[Date])
+				
+				
+				VAR YMinValue = MINX(Values(DateTable[Date]),CALCULATE([Net Revenue]))
+				VAR YMaxValue = MAXX(Values(DateTable[Date]),CALCULATE([Net Revenue]))
+				
+				
+				VAR SparklineTable = ADDCOLUMNS(
+				    SUMMARIZE('DateTable',DateTable[Date]),
+				        "X",INT(150 * DIVIDE(DateTable[Date] - XMinDate, XMaxDate - XMinDate)),
+				        "Y",INT(50 * DIVIDE([Net Revenue]- YMinValue,YMaxValue - YMinValue)))
+				
+				
+				VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", DateTable[Date])
+				
+				
+				VAR LastSparkYValue = MAXX( FILTER(SparklineTable, DateTable[Date] = XMaxDate), [Y])
+				VAR LastSparkXValue = MAXX( FILTER(SparklineTable, DateTable[Date] = XMaxDate), [X])
+				
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' 
+				      stroke-width='0' points=' 0 50 " & Lines & 
+				      " 150 150 Z '/>" &
+				   
+				    "<polyline 
+				        fill='transparent' stroke='" & LineColour & "' 
+				        stroke-linecap='round' stroke-linejoin='round' 
+				        stroke-width='2' points=' " & Lines & 
+				      " '/>" &
+				    
+				        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & PointColour & "' />" &
+				        "</svg>"
+				RETURN SVGImageURL
+				```
+			displayFolder: Revenue
+			lineageTag: 1eabca69-d561-4140-ac63-4d4dbf571c49
+
+		/// SVG sparkline chart showing monthly trend of Net Revenue
+		measure 'Revenue Sparkline Monthly' = ```
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable = 
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],         
+				            DateTable[Month],  
+				            DateTable[MonthStart]    
+				        ),
+				        "MonthlyRevenue", CALCULATE([Net Revenue])
+				    )
+				
+				
+				VAR XMinMonth = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxMonth = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyRevenue])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyRevenue])
+				
+				
+				VAR SparklineTable = 
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinMonth, XMaxMonth - XMinMonth)),
+				        "Y", INT(50  * DIVIDE([MonthlyRevenue] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxMonth), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxMonth), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' stroke-width='0' points=' 0 50 " & Lines & " 150 150 Z '/>" &
+				    "<polyline fill='transparent' stroke='" & LineColour & "' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' points=' " & Lines & " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Revenue
+			lineageTag: c839d1d0-8fb5-435f-9a48-13da7aa27d61
+
+		/// Sum of revenue targets from the Target Table
+		measure 'Revenue Target' = sum(Target_Table[Revenue Target])
+			formatString: $#,##0
+			displayFolder: Revenue
+			lineageTag: 816a5da8-3af5-43c3-b0af-4e5e4ba397d6
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Calculates Revenue Target Gap
+		measure 'Revenue Target Gap' = [Net Revenue] - [Revenue Target]
+			formatString: $#,##0
+			displayFolder: Revenue
+			lineageTag: cb39ab05-a693-4168-a258-1430371c2c31
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Calculates Revenue Target Gap with Arrow
+		measure 'Revenue Target Gap with Arrow' =
+				
+				VAR uparrow = UNICHAR(9650)
+				VAR downarrow = UNICHAR(9660)
+				
+				VAR revenuegap = [Revenue Target Gap]
+				
+				RETURN
+				IF(
+				    revenuegap < 0,
+				    FORMAT(revenuegap, "$#,###") & " " & downarrow,
+				    FORMAT(revenuegap, "$#,###") & " " & uparrow
+				)
+			displayFolder: Revenue
+			lineageTag: 01f3fb9c-938e-41aa-8025-4a515a984775
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Calculates Revenue YoY %
+		measure 'Revenue YoY %' = ```
+				
+				VAR CurrentRevenue = [Net Revenue]
+				VAR PriorRevenue = CALCULATE([Net Revenue], SAMEPERIODLASTYEAR(DateTable[Date]))
+				RETURN
+				DIVIDE(CurrentRevenue - PriorRevenue, PriorRevenue)
+				
+				
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Revenue
+			lineageTag: 6118ec3a-cfbd-4649-949d-8ea2233e4018
+
+		/// Calculates Revenue YoY % 3M MA
+		measure 'Revenue YoY % 3M MA' =
+				
+				CALCULATE(
+				    AVERAGEX(
+				        VALUES(DateTable[Year Month]),
+				        [Revenue YoY %]
+				    ),
+				    DATESINPERIOD(
+				        DateTable[Date],
+				        MAX(DateTable[Date]),
+				        -3,
+				        MONTH
+				    )
+				)
+			formatString: 0.00%
+			displayFolder: Revenue
+			lineageTag: 97280349-7125-4aef-8a79-4ba3c5ad66cc
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Calculates Revenue YoY % DATEADD
+		measure 'Revenue YoY % DATEADD' = ```
+				
+				VAR CurrentRevenue = [Net Revenue]
+				VAR PriorRevenue = CALCULATE([Net Revenue], DATEADD(DateTable[Date], -1, YEAR))
+				RETURN
+				IF(
+				    NOT ISBLANK(CurrentRevenue) && ISBLANK(PriorRevenue), 
+				    1, 
+				    DIVIDE(CurrentRevenue - PriorRevenue, PriorRevenue)
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Revenue
+			lineageTag: 1f71ee7c-16fb-47f6-8404-5edc2140e412
+
+		/// SUM of Total Cost from Sales
+		measure 'Total Cost' = sum('Sales'[Total Cost])
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Total Cost
+			lineageTag: 89a01304-4935-455f-8994-ca8cbbbb382c
+
+		/// Calculates Total Cost 3M MA
+		measure 'Total Cost 3M MA' = CALCULATE(AVERAGEX(VALUES(DateTable[Month]),[Total Cost]),DATESINPERIOD(DateTable[Date],MAX(DateTable[Date]),-3,MONTH))
+			formatString: $#,##0
+			displayFolder: Total Cost
+			lineageTag: 57082cc5-ef20-4a40-88ed-02483731c101
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Calculates Total Cost 6M MA
+		measure 'Total Cost 6M MA' = CALCULATE(AVERAGEX(VALUES(DateTable[Month]),[Total Cost]),DATESINPERIOD(DateTable[Date],MAX(DateTable[Date]),-6,MONTH))
+			formatString: $#,##0
+			displayFolder: Total Cost
+			lineageTag: 5b4c511d-e8c0-449e-b87c-b4762c6f519c
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG progress bar showing Dynamic Total Cost achievement vs target
+		measure 'Total Cost Progress' = ```
+				
+				VAR Actual = [Dynamic Total Cost]
+				VAR Target = [Dynamic Total Cost Target]
+				VAR ProgressRatio = DIVIDE(Actual, Target)
+				VAR PERCENTAGEFILL = MIN(ProgressRatio * 100, 100) 
+				
+				
+				VAR BarColour = "#FFD700" 
+				VAR TextColour = "#FFFFFF" 
+				VAR TrackColour = "#404040" 
+				
+				RETURN
+				IF(ISINSCOPE('Subcategory'[Sub-Category]),
+				"data:image/svg+xml;utf8," & 
+				"<svg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg' display='block' overflow='visible'>
+				<rect id='track' x='0' y='12' width='100' height='6' rx='3' fill='" & TrackColour & "' />
+				<rect id='fill' x='0' y='12' width='" & PERCENTAGEFILL & "' height='6' rx='3' fill='" & BarColour & "'></rect>
+				<text x='0' y='8' font-size='10' font-weight='bold' font-family='Segoe UI, sans-serif' fill='" & TextColour & "'>" & FORMAT(ProgressRatio, "0%") & "</text>
+				</svg>"
+				, BLANK())
+				```
+			displayFolder: Total Cost
+			lineageTag: 91cda1ac-d8f9-4c04-b175-17ede3c86e17
+			dataCategory: ImageUrl
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// SVG sparkline chart showing monthly trend of Total Cost
+		measure 'Total Cost Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				
+				VAR MonthlyTable = 
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],        
+				            DateTable[Month], 
+				            DateTable[MonthStart]   
+				        ),
+				        "MonthlyRevenue", CALCULATE([Total Cost])
+				    )
+				
+				
+				
+				VAR XMinMonth = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxMonth = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyRevenue])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyRevenue])
+				
+				VAR SparklineTable = 
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinMonth, XMaxMonth - XMinMonth)),
+				        "Y", INT(50  * DIVIDE([MonthlyRevenue] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxMonth), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxMonth), [X])
+				
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' stroke-width='0' points=' 0 50 " & Lines & " 150 150 Z '/>" &
+				    "<polyline fill='transparent' stroke='" & LineColour & "' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' points=' " & Lines & " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Total Cost
+			lineageTag: 4a690ec9-ac99-4d5a-bffe-ed21e9e8e929
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Year-over-year percentage change in Total Cost
+		measure 'Total Cost YoY %' = ```
+				
+				VAR CurrentCosts = [Total Cost]
+				VAR PriorCosts = CALCULATE([Total Cost], DATEADD(DateTable[Date], -1, YEAR))
+				RETURN
+				IF(
+				    NOT ISBLANK(CurrentCosts) && ISBLANK(PriorCosts), 
+				    1,
+				    DIVIDE(CurrentCosts - PriorCosts, PriorCosts)
+				)
+				```
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Total Cost
+			lineageTag: 4d053bd3-ac41-4e60-bb2c-b53a176c7e9c
+
+		/// Sum of profit from the Sales table
+		measure 'Total Profit' = sum(Sales[Profit])
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Profit
+			lineageTag: a7a76ec8-029f-4e42-bffe-7bd4b723e209
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Product Clusters","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Customer","TableItemName":"City Cluster","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	ref table '_Other Measures'
+
+		/// Average cost per unit across all products using MAX cost per unit per product name
+		measure 'AVG Cost per Product' = AVERAGEX(VALUES('Product'[Product Name]), CALCULATE(MAX('Sales'[Cost per Unit])))
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: d5321afc-bf20-419d-bbbc-57344b571a97
+
+		/// Average price per unit across all products using MAX price per unit per product name
+		measure 'AVG Price per Product' = AVERAGEX(VALUES('Product'[Product Name]), CALCULATE(MAX('Sales'[Price per Unit])))
+			formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+			lineageTag: cd5ff50d-f69e-4223-8ddc-80a1bc42bb4e
+
+		/// Average Order Value by city calculated as Net Revenue divided by Orders Count
+		measure 'City AOV' = ```
+				DIVIDE([Net Revenue], [Orders Count],0)
+				
+				```
+			formatString: \$#,0;(\$#,0);\$#,0
+			lineageTag: b4ee52bb-3d35-454b-ad74-f8e806956df1
+
+		/// Distinct count of Customer IDs
+		measure 'Customer Count' = DISTINCTCOUNT(Sales[Customer ID])
+			formatString: 0
+			lineageTag: 48bc749f-fc23-4a28-a951-bd158a9ddf79
+
+		/// Shipping costs as a percentage of Net Revenue
+		measure 'Freight %' = DIVIDE([Shipping Costs] , [Net Revenue],0)
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 9749baed-1f86-4924-b4ff-97d7fca8885d
+
+		/// Timestamp label showing the last data refresh date and time
+		measure 'Last Refreshed' =
+				
+				"Last Updated: " & FORMAT(NOW(), "dd MMM yyyy HH:mm")
+			lineageTag: c4c5885d-009b-44c5-b2c0-9f5342bc7b0f
+
+		/// Sum of shipping costs from the Sales table
+		measure 'Shipping Costs' = sum(Sales[Shipping Cost])
+			formatString: \$#,0;(\$#,0);\$#,0
+			lineageTag: 8ca549d0-02c9-4dc1-9b1d-919355f36a99
+
+		/// Dynamic title for the time intelligence table based on the selected period (MTD/QTD/YTD)
+		measure 'Time Intelligence Table Title' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				VAR FullName = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", "MTD",
+				        "QTD", "QTD",
+				        "YTD", "YTD",
+				        "Year-to-Date"
+				    )
+				RETURN
+				"Category / Sub-Category - " & FullName & " Details"
+				```
+			lineageTag: 309a0113-29c3-40c4-98be-9bb69a8caf92
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Dynamic full-name title for time intelligence cards (Month-to-Date, Quarter-to-Date, Year-to-Date)
+		measure 'Time-Intelligence Card Title' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				VAR FullName = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", "Month-to-Date",
+				        "QTD", "Quarter-to-Date",
+				        "YTD", "Year-to-Date",
+				        "Year-to-Date"
+				    )
+				RETURN
+				FullName
+				```
+			lineageTag: 23efcba0-2c15-4b02-a88b-a8e6970bcc5a
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Dynamic title for the revenue by segment donut chart based on selected period
+		measure 'Time-Intelligence Donut Title' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				VAR FullName = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", "MTD",
+				        "QTD", "QTD",
+				        "YTD", "YTD",
+				        "Year-to-Date"
+				    )
+				RETURN
+				"Revenue by Segment - " & FullName
+				```
+			lineageTag: 1e65e5cf-bcf9-427c-821e-d6bc1aac410c
+
+		/// Dynamic title for category/sub-category table based on selected period
+		measure 'Time-Intelligence Table Title' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				VAR FullName = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", "MTD",
+				        "QTD", "QTD",
+				        "YTD", "YTD",
+				        "Year-to-Date"
+				    )
+				RETURN
+				"Category / Sub-Category - " & FullName & " Details"
+				```
+			lineageTag: 334d8e28-2310-4fcf-a167-eeb8cc3de865
+
+		/// Dynamic title for the revenue by category treemap based on selected period
+		measure 'Time-Intelligence Treemap Title' = ```
+				
+				VAR SelectedPeriod = SELECTEDVALUE(TimeFilter[Period], "YTD")
+				VAR FullName = 
+				    SWITCH( SelectedPeriod,
+				        "MTD", "MTD",
+				        "QTD", "QTD",
+				        "YTD", "YTD",
+				        "Year-to-Date"
+				    )
+				RETURN
+				"Revenue by Category - " & FullName
+				```
+			lineageTag: fdbbdf1e-3bc8-42b6-9141-a7c6f7b03483
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Top sub-category by Net Revenue
+		measure 'TOP Subcategory' = CONCATENATEX(TOPN(1, VALUES('Product'[Sub-Category]), [Net Revenue], DESC), 'Product'[Sub-Category])
+			lineageTag: cf85a95a-1c3f-43ef-a749-9e5571410568
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Sum of discounted sales value
+		measure 'Total Value Discounted' = sum(Sales[Discounted Value])
+			formatString: \$#,0;(\$#,0);\$#,0
+			lineageTag: c80e78f4-7b06-426b-84d8-60c8a55da262
+
+		/// Dynamic title for the word cloud visual based on the selected Word Cloud Order parameter
+		measure 'Word Cloud Title' =
+				
+				VAR SelectedIndex =
+				    SELECTEDVALUE('Word Cloud'[Word Cloud Order], 0)
+				RETURN
+				SWITCH(
+				    SelectedIndex,
+				    0, "Product Name Patterns by Quantity",
+				    1, "Product Name Patterns by Revenue",
+				    2, "Product Name Patterns by Discounts",
+				    3, "Product Name Patterns by Profit",
+				    "Product Name Patterns"
+				)
+			lineageTag: b0a1bb63-cbb9-4ffe-b895-b8885a04b895
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	ref table Customer
+
+		/// Display label combining the active Scenario Tariff Rate and Price Increase Rate
+		measure 'Active Tariff Rate' =
+				
+				"Tariff: " & [Scenario Tariff Rate] & "% | Price Increase: " & [Scenario Price Increase] & "%"
+			displayFolder: Tariffs
+			lineageTag: 926c2824-7880-40a6-a235-07fb838818cf
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Total Cost adjusted upward by the Scenario Tariff Rate
+		measure 'Adjusted Cost' = [Total Cost] * (1 + DIVIDE([Scenario Tariff Rate], 100))
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Tariff Analysis
+			lineageTag: a72b0921-8d8b-4d8b-a8a7-226723a1503e
+
+			changedProperty = IsHidden
+
+		/// Sum of Total Cost targets from the Target Table
+		measure 'Adjusted Cost Target' = sum(Target_Table[Total Costs Target])
+			displayFolder: Tariffs
+			lineageTag: 28784da5-64d4-478c-88d4-a8a01a4344d1
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Difference between Adjusted Cost and the Adjusted Cost Target
+		measure 'Adjusted Cost Target Gap' = [Adjusted Cost] - [Adjusted Cost Target]
+			displayFolder: Tariffs
+			lineageTag: 2d53f508-99cf-4b14-9001-28966a9c837f
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Adjusted Revenue minus Adjusted Cost under the active tariff scenario
+		measure 'Adjusted Profit' = [Adjusted Revenue] - [Adjusted Cost]
+			formatString: \$#,0;(\$#,0);\$#,0
+			displayFolder: Tariff Analysis
+			lineageTag: 3698263b-5fa3-444e-824a-832985b58732
+
+			changedProperty = IsHidden
+
+		/// Adjusted Profit divided by Adjusted Revenue under the active tariff scenario
+		measure 'Adjusted Profit Margin %' = DIVIDE([Adjusted Profit], [Adjusted Revenue],0)
+			formatString: 0.00%;-0.00%;0.00%
+			displayFolder: Tariff Analysis
+			lineageTag: a6c4667d-2414-4eaa-870c-4d768165fdd4
+
+			changedProperty = IsHidden
+
+		/// Revenue adjusted for Price Increase Rate
+		measure 'Adjusted Revenue' = [Net Revenue] * (1 + DIVIDE([Scenario Price Increase], 100))
+			formatString: 0
+			displayFolder: Tariff Analysis
+			lineageTag: 20ad7789-7518-48b8-b4b9-f10f11e6ecfd
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		/// SVG sparkline chart showing monthly trend of Adjusted Cost
+		measure 'Adjusted Total Cost Sparkline Monthly' = ```
+				
+				VAR LineColour = "#FFD700"
+				VAR Pointcolour = "#FFD700"
+				VAR Defs = "<defs>
+				    <linearGradient id='grad' x1='0' y1='0' x2='0' y2='1'>
+				        <stop offset='0%' stop-color='#FFD700' />
+				        <stop offset='100%' stop-color='#D3D3D3' stop-opacity='0.2' />
+				    </linearGradient>
+				</defs>"
+				
+				VAR MonthlyTable = 
+				    ADDCOLUMNS(
+				        SUMMARIZE(
+				            'DateTable',
+				            DateTable[Year],        
+				            DateTable[Month], 
+				            DateTable[MonthStart]    
+				        ),
+				        "MonthlyRevenue", CALCULATE([Adjusted Cost])
+				    )
+				
+				VAR XMinMonth = MINX(MonthlyTable, [MonthStart])
+				VAR XMaxMonth = MAXX(MonthlyTable, [MonthStart])
+				VAR YMinValue = MINX(MonthlyTable, [MonthlyRevenue])
+				VAR YMaxValue = MAXX(MonthlyTable, [MonthlyRevenue])
+				
+				VAR SparklineTable = 
+				    ADDCOLUMNS(
+				        MonthlyTable,
+				        "X", INT(150 * DIVIDE([MonthStart] - XMinMonth, XMaxMonth - XMinMonth)),
+				        "Y", INT(50  * DIVIDE([MonthlyRevenue] - YMinValue, YMaxValue - YMinValue))
+				    )
+				
+				VAR Lines = CONCATENATEX(SparklineTable, [X] & "," & 50 - [Y], " ", [MonthStart])
+				
+				VAR LastSparkYValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxMonth), [Y])
+				VAR LastSparkXValue = MAXX(FILTER(SparklineTable, [MonthStart] = XMaxMonth), [X])
+				
+				VAR SVGImageURL = 
+				    "data:image/svg+xml;utf8," & 
+				    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs & 
+				    "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent' stroke-width='0' points=' 0 50 " & Lines & " 150 150 Z '/>" &
+				    "<polyline fill='transparent' stroke='" & LineColour & "' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' points=' " & Lines & " '/>" &
+				    "<circle cx='" & LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='2' fill='" & Pointcolour & "' />" &
+				    "</svg>"
+				
+				RETURN SVGImageURL
+				```
+			displayFolder: Tariffs
+			lineageTag: 467a73e7-c84d-4437-8d20-bbb146a8717f
+			dataCategory: ImageUrl
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Selected price increase percentage from the Scenarios table, defaulting to the Price Increase Rate Value
+		measure 'Scenario Price Increase' =
+				
+				SELECTEDVALUE(Scenarios[Price Increase], [Price Increase Rate Value])
+			displayFolder: Tariffs
+			lineageTag: 2b984570-b4e3-4d13-8360-be5277cf4f19
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Selected tariff rate percentage from the Scenarios table, defaulting to the Tariff Rate Value
+		measure 'Scenario Tariff Rate' =
+				
+				SELECTEDVALUE(Scenarios[Tariff Rate], [Tariff Rate Value])
+			displayFolder: Tariffs
+			lineageTag: 02d3045c-62c4-42a3-89bc-b161746051c4
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Dollar impact on Total Cost from applying the Scenario Tariff Rate
+		measure 'Tariff Impact' = [Total Cost] * DIVIDE([Scenario Tariff Rate], 100)
+			displayFolder: Tariff Analysis
+			lineageTag: d062352b-7001-432b-8fee-8f4e7d10fa8a
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Value used in waterfall chart showing Baseline Profit, Tariff Impact, and Price Increase Benefit
+		measure 'Waterfall Value' =
+				
+				SWITCH(
+				    SELECTEDVALUE(WaterfallSteps[Metric]),
+				    "Baseline Profit", [Total Profit],
+				    "Tariff Impact", -[Tariff Impact],
+				    "Price Increase Benefit", [Adjusted Revenue] - [Net Revenue]
+				)
+			displayFolder: Tariff Analysis
+			lineageTag: c1fea4ba-1c54-4a67-8a68-8a29a96aedba
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	ref table 'Price Increase Rate'
+
+		/// Selected value from the Price Increase Rate table, defaulting to 0
+		measure 'Price Increase Rate Value' = SELECTEDVALUE('Price Increase Rate'[Price Increase Rate], 0)
+			formatString: 0
+			lineageTag: 38ee46e2-2468-45ce-aa6d-8e225566dd2f
+
+	ref table 'Summary Statistics'
+
+		/// Dynamic title for the matrix visual combining selected dimension, metric, and aggregation
+		measure 'Matrix Dynamic Title' =
+				
+				VAR SelectedDimension =
+				    CONCATENATEX(
+				        ALLSELECTED('Dimension Switcher'),
+				        'Dimension Switcher'[Dimension Switcher],
+				        ", "
+				    )
+				
+				VAR SelectedField =
+				    CONCATENATEX(
+				        ALLSELECTED('Parameter'),
+				        'Parameter'[Metric Switch],
+				        ", "
+				    )
+				
+				VAR SelectedCalc =
+				    SELECTEDVALUE('Summary Statistics'[Aggregation], "Value")
+				
+				RETURN
+				SelectedCalc & " of " & SelectedField & " by " & SelectedDimension
+			lineageTag: d46a3e51-819b-4dff-a4e0-e54500e38a1c
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	ref table 'Tariff Rate'
+
+		/// Selected value from the Tariff Rate table, defaulting to 0
+		measure 'Tariff Rate Value' = SELECTEDVALUE('Tariff Rate'[Tariff Rate], 0)
+			formatString: 0
+			lineageTag: a60d4f81-7197-4fe6-9e8b-c0d35f6d343b

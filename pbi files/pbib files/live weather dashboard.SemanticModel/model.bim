@@ -1,0 +1,1147 @@
+{
+  "compatibilityLevel": 1601,
+  "model": {
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"weather\",\"Errors in weather\"]"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.146.1254.0 (25.08)+791a7518fadc83da883d79322a2658aff57c8db3"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-IN",
+    "cultures": [
+      {
+        "name": "en-IN",
+        "linguisticMetadata": {
+          "content": {
+            "Language": "en-US",
+            "Version": "1.0.0"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "expressions": [
+      {
+        "name": "Errors in weather",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "expression": [
+          "let",
+          "Source = weather,",
+          "  #\"Detected Type Mismatches\" = let",
+          "    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Source, Table.ColumnsOfType(Source, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),",
+          "    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),",
+          "    fieldNames = Record.FieldNames(recordTypeFields),",
+          "    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),",
+          "    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = \"The type of the value does not match the type of the column.\", Detail = v], fieldTypes{i}})",
+          "in",
+          "    Table.TransformColumns(Source, pairs),",
+          "  #\"Added Index\" = Table.AddIndexColumn(#\"Detected Type Mismatches\", \"Row Number\" ,1),",
+          "  #\"Kept Errors\" = Table.SelectRowsWithErrors(#\"Added Index\", {\"Timestamp\", \"Temperature\", \"Humidity\", \"Pressure\"}),",
+          "  #\"Reordered Columns\" = Table.ReorderColumns(#\"Kept Errors\", {\"Row Number\", \"Timestamp\", \"Temperature\", \"Humidity\", \"Pressure\"})",
+          "in",
+          "  #\"Reordered Columns\""
+        ],
+        "kind": "m",
+        "lineageTag": "1f2fd5f4-5f8e-4af0-a947-3478793e6408",
+        "queryGroup": "Query Errors - 2/1/2026 10:17:10 PM"
+      }
+    ],
+    "queryGroups": [
+      {
+        "annotations": [
+          {
+            "name": "PBI_QueryGroupOrder",
+            "value": "0"
+          }
+        ],
+        "description": "Errors in queries that were loaded on 2/1/2026 10:17:10 PM.",
+        "folder": "Query Errors - 2/1/2026 10:17:10 PM"
+      }
+    ],
+    "relationships": [
+      {
+        "name": "ee7ff810-bcf4-4d1d-be03-98aef0a4dd47",
+        "fromColumn": "Timestamp",
+        "fromTable": "weather",
+        "joinOnDateBehavior": "datePartOnly",
+        "toColumn": "Date",
+        "toTable": "LocalDateTable_85ff1c35-a2e9-4617-aabf-03f46100e7d0"
+      }
+    ],
+    "sourceQueryCulture": "en-US",
+    "tables": [
+      {
+        "name": "weather",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Timestamp",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "General Date",
+            "lineageTag": "e03832c2-00cb-438a-b654-1942030034f9",
+            "sourceColumn": "Timestamp",
+            "summarizeBy": "none",
+            "variations": [
+              {
+                "name": "Variation",
+                "defaultHierarchy": {
+                  "hierarchy": "Date Hierarchy",
+                  "table": "LocalDateTable_85ff1c35-a2e9-4617-aabf-03f46100e7d0"
+                },
+                "isDefault": true,
+                "relationship": "ee7ff810-bcf4-4d1d-be03-98aef0a4dd47"
+              }
+            ]
+          },
+          {
+            "name": "Temperature",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "4f3266bb-d996-4cb6-9ef6-ee43c8a3695a",
+            "sourceColumn": "Temperature",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Humidity",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "7c81bc05-8799-44b5-b272-433d33b901d1",
+            "sourceColumn": "Humidity",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Pressure",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "e95329b0-e5db-4bfa-a4b9-17adaddf7682",
+            "sourceColumn": "Pressure",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Hour",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "expression": "HOUR('weather'[timestamp])",
+            "formatString": "0",
+            "isDataTypeInferred": true,
+            "lineageTag": "2f4305a6-2272-4782-8995-22a530156bf0",
+            "summarizeBy": "sum",
+            "type": "calculated"
+          },
+          {
+            "name": "Day Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "expression": "FORMAT('weather'[timestamp], \"dddd\")",
+            "isDataTypeInferred": true,
+            "lineageTag": "4a7fa4b1-ad38-49ab-b1d9-f2fbd505b274",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Heat Index Column",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "expression": [
+              "",
+              "VAR T_C = 'weather'[temperature]",
+              "VAR R = 'weather'[humidity]",
+              "VAR T = (T_C * 9/5) + 32",
+              "VAR HI_F = ",
+              "    -42.379 + ",
+              "    2.04901523 * T + ",
+              "    10.14333127 * R - ",
+              "    0.22475541 * T * R - ",
+              "    0.00683783 * T * T - ",
+              "    0.05481717 * R * R + ",
+              "    0.00122874 * T * T * R + ",
+              "    0.00085282 * T * R * R - ",
+              "    0.00000199 * T * T * R * R",
+              "VAR HI_C = (HI_F - 32) * 5/9",
+              "RETURN ",
+              "IF(T_C < 27, T_C, HI_C)"
+            ],
+            "isDataTypeInferred": true,
+            "lineageTag": "1b3c644f-b8bc-4dbd-9031-743cf4ed0b06",
+            "summarizeBy": "sum",
+            "type": "calculated"
+          }
+        ],
+        "lineageTag": "f0a746d3-cf86-4a21-ac45-2f28b1e7e394",
+        "measures": [
+          {
+            "name": "Latest Temperature",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "VAR LatestTime =",
+              "    MAX (weather[Timestamp] )",
+              "RETURN",
+              "    CALCULATE (",
+              "        MAX (weather[Temperature] ),",
+              "        weather[Timestamp] = LatestTime",
+              "    )",
+              ""
+            ],
+            "lineageTag": "99a42e17-50f0-4a5b-94af-1492ff908ddb"
+          },
+          {
+            "name": "Latest Humidity",
+            "expression": [
+              "",
+              "VAR LatestTime =",
+              "    MAX (weather[Timestamp] )",
+              "RETURN",
+              "    CALCULATE (",
+              "        MAX (weather[Humidity] ),",
+              "        weather[Timestamp] = LatestTime",
+              "    )"
+            ],
+            "formatString": "0",
+            "lineageTag": "a0fb14f8-97be-439c-88f8-ee5d68c8ae1b"
+          },
+          {
+            "name": "Latest Pressure",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "VAR LatestTime =",
+              "    MAX (weather[Timestamp] )",
+              "RETURN",
+              "    CALCULATE (",
+              "        MAX (weather[Pressure] ),",
+              "        weather[Timestamp] = LatestTime",
+              "    )"
+            ],
+            "lineageTag": "ac28e371-fad2-44e6-be3d-3f4edce08ec7"
+          },
+          {
+            "name": "IsNight",
+            "expression": [
+              "",
+              "VAR _LatestTimestamp = MAX('weather'[timestamp])",
+              "VAR _CurrentHour = HOUR(_LatestTimestamp)",
+              "RETURN ",
+              "IF(_CurrentHour >= 18 || _CurrentHour < 6, 1, 0)"
+            ],
+            "formatString": "0",
+            "lineageTag": "6cddc72c-344c-4400-a35f-40954359feb9"
+          },
+          {
+            "name": "PressureTrend",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "VAR _LatestTime = MAX('weather'[timestamp])",
+              "VAR _CurrentP = [Latest Pressure]",
+              "VAR _PastTime = _LatestTime - (3 / 24) -- 3 hours ago",
+              "VAR _PastP = ",
+              "    CALCULATE(",
+              "        AVERAGE('weather'[pressure]), ",
+              "        FILTER(",
+              "            ALL('weather'), ",
+              "            'weather'[timestamp] >= _PastTime - (2/1440) && ",
+              "            'weather'[timestamp] <= _PastTime + (2/1440)",
+              "        )",
+              "    )",
+              "RETURN ",
+              "IF(ISBLANK(_PastP), 0, _CurrentP - _PastP)"
+            ],
+            "lineageTag": "08795957-2488-4731-bec8-59fabf3ba95b"
+          },
+          {
+            "name": "Weather Status",
+            "expression": [
+              "",
+              "VAR _P = MAX('weather'[pressure])",
+              "VAR _H = MAX('weather'[humidity])",
+              "VAR _T = MAX('weather'[temperature])",
+              "VAR _Trend = [PressureTrend]",
+              "VAR _Night = [IsNight]",
+              "",
+              "RETURN",
+              "SWITCH( TRUE(),",
+              "    -- 1. STORMY: Only if pressure is low AND falling very fast",
+              "    _P < 1009 && _Trend < -1.5, \"Stormy\",",
+              "",
+              "    -- 2. RAINY: Pressure is low and dropping",
+              "    _P < 1006 && _Trend < 0, \"Rainy\",",
+              "",
+              "    -- 3. SHOWERS: Pressure is moderate and dropping",
+              "    _P < 1010 && _Trend < -0.5, \"Showers\",",
+              "",
+              "    -- 4. FOGGY: High humidity (Common in early Trichy mornings)",
+              "    _H > 92 && _T < 25, \"Foggy\",",
+              "",
+              "    -- 5. HAZE: Hot and dry (Very common in Trichy)",
+              "    _T > 32 && _H < 45, \"Haze\",",
+              "",
+              "    -- 6. SUNNY / CLEAR: High pressure or stable",
+              "    _P >= 1010 && _Trend > -0.5 && _Night = 0, \"Sunny\",",
+              "    _P >= 1010 && _Trend > -0.5 && _Night = 1, \"Clear Sky\",",
+              "",
+              "    -- Default",
+              "    \"Partly Sunny\"",
+              ")"
+            ],
+            "lineageTag": "6b8293ac-62d8-45d9-bd43-ffce1e068038"
+          },
+          {
+            "name": "Weather Icon URL",
+            "dataCategory": "ImageUrl",
+            "expression": [
+              "",
+              "VAR _Status = [Weather Status]",
+              "VAR _Night = [IsNight]",
+              "",
+              "-- Map the labels to the 'icon' IDs from your CSV",
+              "VAR _IconID = ",
+              "    SWITCH( TRUE(),",
+              "        CONTAINSSTRING(_Status, \"Stormy\"), \"389\", -- Moderate or heavy rain with thunder",
+              "        CONTAINSSTRING(_Status, \"Rainy\"), \"308\",  -- Heavy rain",
+              "        CONTAINSSTRING(_Status, \"Showers\"), \"353\", -- Light rain shower",
+              "        CONTAINSSTRING(_Status, \"Foggy\"), \"248\",   -- Fog",
+              "        CONTAINSSTRING(_Status, \"Haze\"), \"143\",    -- Mist (Closest to Haze)",
+              "        CONTAINSSTRING(_Status, \"Sunny\"), \"113\",   -- Sunny",
+              "        CONTAINSSTRING(_Status, \"Clear Sky\"), \"113\", -- Clear",
+              "        \"119\" -- Default Cloudy",
+              "    )",
+              "",
+              "-- Determine the folder (day or night)",
+              "VAR _TimeFolder = IF(_Night = 1, \"night\", \"day\")",
+              "",
+              "RETURN",
+              "\"https://cdn.weatherapi.com/weather/64x64/\" & _TimeFolder & \"/\" & _IconID & \".png\""
+            ],
+            "lineageTag": "20d3738a-7fe3-4d64-a7c1-73f76b9aa730"
+          },
+          {
+            "name": "Feels Like Temp",
+            "expression": [
+              "",
+              "VAR _TC = [Latest Temperature] -- Your temperature measure or MAX('weather'[temperature])",
+              "VAR _H = [Latest Humidity]      -- Your humidity measure or MAX('weather'[humidity])",
+              "",
+              "-- Convert Celsius to Fahrenheit for the formula",
+              "VAR _TF = (_TC * 1.8) + 32",
+              "",
+              "-- Calculate Heat Index in Fahrenheit",
+              "VAR _HI_F = ",
+              "    IF(_TF < 80, _TF, -- Heat index isn't used below 80°F (26.6°C)",
+              "        -42.379 + ",
+              "        (2.04901523 * _TF) + ",
+              "        (10.14333127 * _H) - ",
+              "        (0.22475541 * _TF * _H) - ",
+              "        (0.00683783 * (_TF^2)) - ",
+              "        (0.05481717 * (_H^2)) + ",
+              "        (0.00122874 * (_TF^2) * _H) + ",
+              "        (0.00085282 * _TF * (_H^2)) - ",
+              "        (0.00000199 * (_TF^2) * (_H^2))",
+              "    )",
+              "",
+              "-- Convert back to Celsius",
+              "VAR _HI_C = (_HI_F - 32) / 1.8",
+              "",
+              "RETURN ",
+              "ROUND(_HI_C, 1) & \"°C\""
+            ],
+            "lineageTag": "197c324e-af48-4317-865e-f24ba221c606"
+          },
+          {
+            "name": "RealTime_DewPoint",
+            "expression": [
+              "",
+              "-- 1. Get the single latest reading from your sensor",
+              "VAR _LastUpdate = CALCULATE(MAX('weather'[timestamp]), ALL('weather'))",
+              "VAR _T = CALCULATE(MAX('weather'[temperature]), 'weather'[timestamp] = _LastUpdate)",
+              "VAR _H = CALCULATE(MAX('weather'[humidity]), 'weather'[timestamp] = _LastUpdate)",
+              "",
+              "-- 2. Clean the humidity (ensure it's between 0-100)",
+              "VAR _CleanH = IF(_H > 100, 100, IF(_H < 0, 0, _H))",
+              "",
+              "-- 3. Use the most robust meteorological formula (Simple Linear)",
+              "-- With T=26.7 and H=67, this MUST result in 20.1",
+              "VAR _CalculatedDP = _T - ((100 - _CleanH) / 5)",
+              "",
+              "RETURN ",
+              "IF(ISBLANK(_T), \"Loading...\", ROUND(_CalculatedDP, 1) & \"°C\")"
+            ],
+            "lineageTag": "725b4cf3-9abe-4caa-90f1-abc0e5c631b0"
+          },
+          {
+            "name": "Comfort Level",
+            "expression": [
+              "",
+              "VAR LastUpdate = CALCULATE(MAX('weather'[timestamp]), ALL('weather'))",
+              "VAR T = CALCULATE(MAX('weather'[temperature]), 'weather'[timestamp] = LastUpdate)",
+              "VAR H = CALCULATE(MAX('weather'[humidity]), 'weather'[timestamp] = LastUpdate)",
+              "",
+              "-- 1. Calculate the numeric Dew Point right here",
+              "VAR CleanH = IF(H > 100, 100, IF(H < 0, 0, H))",
+              "VAR DP = T - ((100 - CleanH) / 5)",
+              "",
+              "-- 2. Determine the Label",
+              "RETURN",
+              "SWITCH( TRUE(),",
+              "    ISBLANK(T), \"Waiting for Data\",",
+              "    DP < 10, \"Very Dry\",",
+              "    DP < 13, \"Comfortable\",",
+              "    DP < 16, \"Pleasant\",",
+              "    DP < 19, \"Slightly Humid\",",
+              "    DP < 22, \"Humid and Muggy\",",
+              "    DP < 24, \"Very Sticky\",",
+              "    \"Oppressive and Extreme\"",
+              ")"
+            ],
+            "lineageTag": "b381abf1-8167-45d8-8260-708c7ec0a852"
+          },
+          {
+            "name": "Daily Max Temp",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "VAR _Today = TODAY()",
+              "RETURN",
+              "CALCULATE(",
+              "    MAX('weather'[temperature]), ",
+              "    KEEPFILTERS(DATEVALUE('weather'[timestamp]) = _Today)",
+              ")"
+            ],
+            "lineageTag": "93f0d3fe-595c-472f-a8a3-f2dffbf5e8a0"
+          },
+          {
+            "name": "Daily Min Temp",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "VAR _Today = TODAY()",
+              "RETURN",
+              "CALCULATE(",
+              "    MIN('weather'[temperature]), ",
+              "    KEEPFILTERS(DATEVALUE('weather'[timestamp]) = _Today)",
+              ")"
+            ],
+            "lineageTag": "b0efe41a-3b67-4552-ba83-61b99cc2555b"
+          },
+          {
+            "name": "Temp Variation",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": "[Daily Max Temp] - [Daily Min Temp]",
+            "lineageTag": "f3640264-7f54-4748-a058-929f7348d4ef"
+          },
+          {
+            "name": "Average Heat Index",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "AVERAGEX(",
+              "    'weather',",
+              "    -- Logic for Heat Index (Celsius)",
+              "    VAR T_C = 'weather'[temperature]",
+              "    VAR R = 'weather'[humidity]",
+              "    VAR T = (T_C * 9/5) + 32",
+              "    VAR HI_F = ",
+              "        -42.379 + ",
+              "        2.04901523 * T + ",
+              "        10.14333127 * R - ",
+              "        0.22475541 * T * R - ",
+              "        0.00683783 * T * T - ",
+              "        0.05481717 * R * R + ",
+              "        0.00122874 * T * T * R + ",
+              "        0.00085282 * T * R * R - ",
+              "        0.00000199 * T * T * R * R",
+              "    VAR HI_C = (HI_F - 32) * 5/9",
+              "    RETURN ",
+              "    IF(T_C < 27, T_C, HI_C)",
+              ")"
+            ],
+            "lineageTag": "0431e6cd-122d-4ab9-940a-54cf4f70afef"
+          },
+          {
+            "name": "location",
+            "expression": "\"Trichy\"",
+            "lineageTag": "f9b287f4-5c8e-4853-9baf-f05ee6f3d5ac"
+          },
+          {
+            "name": "Last Sync Time",
+            "expression": [
+              "",
+              "VAR _IndianTime = UTCNOW() + (5.5 / 24)",
+              "RETURN",
+              "FORMAT(_IndianTime, \"dd-MMM-yyyy hh:mm AM/PM\")"
+            ],
+            "lineageTag": "774ca8d1-4979-46f4-88be-9377e071c828"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "weather",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(Web.Contents(\"https://docs.google.com/spreadsheets/d/e/2PACX-1vTlOAtzO2CHa-I7mMz8emKgPUFBzeGBnmwmdLlUm4XriQhpEDo2gJ44zX1nZTzpUV9SNKXSslsVk7cV/pub?output=csv\"),[Delimiter=\",\", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Column1\", type datetime}, {\"Column2\", type number}, {\"Column3\", Int64.Type}, {\"Column4\", type number}}),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Changed Type\",{{\"Column1\", \"Timestamp\"}, {\"Column2\", \"Temperature\"}, {\"Column3\", \"Humidity\"}, {\"Column4\", \"Pressure\"}}),",
+                "    #\"Removed Top Rows\" = Table.Skip(#\"Renamed Columns\",1)",
+                "in",
+                "    #\"Removed Top Rows\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "DateTableTemplate_658ca51f-af75-4c0c-ab1f-dab97cdbe0aa",
+        "annotations": [
+          {
+            "name": "__PBI_TemplateDateTable",
+            "value": "true"
+          },
+          {
+            "name": "DefaultItem",
+            "value": "DateHierarchy"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ],
+            "dataCategory": "PaddedDateTableDates",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "isNameInferred": true,
+            "lineageTag": "eef28bf8-9d32-4aac-b25e-d1bdf2a59320",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Year"
+              }
+            ],
+            "dataCategory": "Years",
+            "dataType": "int64",
+            "expression": "YEAR([Date])",
+            "isHidden": true,
+            "lineageTag": "b228c449-6717-48d7-8167-fcf0e76d5459",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "MonthNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "MonthNumber"
+              }
+            ],
+            "dataCategory": "MonthOfYear",
+            "dataType": "int64",
+            "expression": "MONTH([Date])",
+            "isHidden": true,
+            "lineageTag": "86992a6b-8070-4be4-a5e5-47e0959bbb19",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Month",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Month"
+              }
+            ],
+            "dataCategory": "Months",
+            "dataType": "string",
+            "expression": "FORMAT([Date], \"MMMM\")",
+            "isHidden": true,
+            "lineageTag": "1ff7a806-fc1f-4baa-832e-847e03c6dea9",
+            "sortByColumn": "MonthNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "QuarterNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "QuarterNumber"
+              }
+            ],
+            "dataCategory": "QuarterOfYear",
+            "dataType": "int64",
+            "expression": "INT(([MonthNo] + 2) / 3)",
+            "isHidden": true,
+            "lineageTag": "d268ba53-27a1-4db6-942f-5d9690c8e517",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Quarter",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Quarter"
+              }
+            ],
+            "dataCategory": "Quarters",
+            "dataType": "string",
+            "expression": "\"Qtr \" & [QuarterNo]",
+            "isHidden": true,
+            "lineageTag": "596643e4-ed22-4400-b108-1366979b7e08",
+            "sortByColumn": "QuarterNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Day",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Day"
+              }
+            ],
+            "dataCategory": "DayOfMonth",
+            "dataType": "int64",
+            "expression": "DAY([Date])",
+            "isHidden": true,
+            "lineageTag": "c3af7fd0-c807-4196-97a9-932b8d3757ca",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "annotations": [
+              {
+                "name": "TemplateId",
+                "value": "DateHierarchy"
+              }
+            ],
+            "levels": [
+              {
+                "name": "Year",
+                "column": "Year",
+                "lineageTag": "1c2420a5-7daa-48a2-963d-ba2cf5ca8ede",
+                "ordinal": 0
+              },
+              {
+                "name": "Quarter",
+                "column": "Quarter",
+                "lineageTag": "aadabfd7-83d6-4c9c-a74a-2e09c250315c",
+                "ordinal": 1
+              },
+              {
+                "name": "Month",
+                "column": "Month",
+                "lineageTag": "d8499053-1995-426f-94bb-567a05497d85",
+                "ordinal": 2
+              },
+              {
+                "name": "Day",
+                "column": "Day",
+                "lineageTag": "f7e4cefa-f633-496a-8258-bfb3906009d9",
+                "ordinal": 3
+              }
+            ],
+            "lineageTag": "749318dc-19fa-46f0-b981-e03907180006"
+          }
+        ],
+        "isHidden": true,
+        "isPrivate": true,
+        "lineageTag": "486d7d73-e487-44a3-a002-0f3f475464ec",
+        "partitions": [
+          {
+            "name": "DateTableTemplate_658ca51f-af75-4c0c-ab1f-dab97cdbe0aa",
+            "mode": "import",
+            "source": {
+              "expression": "Calendar(Date(2015,1,1), Date(2015,1,1))",
+              "type": "calculated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "LocalDateTable_85ff1c35-a2e9-4617-aabf-03f46100e7d0",
+        "annotations": [
+          {
+            "name": "__PBI_LocalDateTable",
+            "value": "true"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              }
+            ],
+            "dataCategory": "PaddedDateTableDates",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "isNameInferred": true,
+            "lineageTag": "e7d6082f-de60-434c-9260-dfa57a665e9f",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Year"
+              }
+            ],
+            "dataCategory": "Years",
+            "dataType": "int64",
+            "expression": "YEAR([Date])",
+            "isHidden": true,
+            "lineageTag": "11b8c264-d65c-4827-b1f6-471be6bcc41f",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "MonthNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "MonthNumber"
+              }
+            ],
+            "dataCategory": "MonthOfYear",
+            "dataType": "int64",
+            "expression": "MONTH([Date])",
+            "isHidden": true,
+            "lineageTag": "2f284860-18f6-485a-9775-c84283e26d90",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Month",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Month"
+              }
+            ],
+            "dataCategory": "Months",
+            "dataType": "string",
+            "expression": "FORMAT([Date], \"MMMM\")",
+            "isHidden": true,
+            "lineageTag": "d18152ad-3847-46a9-9a66-6f05ffb21a7c",
+            "sortByColumn": "MonthNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "QuarterNo",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "QuarterNumber"
+              }
+            ],
+            "dataCategory": "QuarterOfYear",
+            "dataType": "int64",
+            "expression": "INT(([MonthNo] + 2) / 3)",
+            "isHidden": true,
+            "lineageTag": "c364066b-4c6f-496b-a2bd-5528a8cb5cfe",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Quarter",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Quarter"
+              }
+            ],
+            "dataCategory": "Quarters",
+            "dataType": "string",
+            "expression": "\"Qtr \" & [QuarterNo]",
+            "isHidden": true,
+            "lineageTag": "690332ed-27c1-46da-be6d-2ce1da737c2e",
+            "sortByColumn": "QuarterNo",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Day",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "TemplateId",
+                "value": "Day"
+              }
+            ],
+            "dataCategory": "DayOfMonth",
+            "dataType": "int64",
+            "expression": "DAY([Date])",
+            "isHidden": true,
+            "lineageTag": "66f6aa83-1438-4cc2-a2f3-95a478d5b66a",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "Date Hierarchy",
+            "annotations": [
+              {
+                "name": "TemplateId",
+                "value": "DateHierarchy"
+              }
+            ],
+            "levels": [
+              {
+                "name": "Year",
+                "column": "Year",
+                "lineageTag": "02ecd21d-1e95-42c7-b31e-b318be2fae43",
+                "ordinal": 0
+              },
+              {
+                "name": "Quarter",
+                "column": "Quarter",
+                "lineageTag": "f58aed45-df91-483e-9b1b-cf1fd917514f",
+                "ordinal": 1
+              },
+              {
+                "name": "Month",
+                "column": "Month",
+                "lineageTag": "d0e43e22-acc1-435c-bccb-ec1dc417b3fd",
+                "ordinal": 2
+              },
+              {
+                "name": "Day",
+                "column": "Day",
+                "lineageTag": "a8a97000-5f1a-49a4-be9b-e53452ae0a2d",
+                "ordinal": 3
+              }
+            ],
+            "lineageTag": "a9ebe8be-6ccb-45a2-8e6c-bf4279a67b9c"
+          }
+        ],
+        "isHidden": true,
+        "lineageTag": "d3e85db3-f15f-491e-aee8-70189896a8ae",
+        "partitions": [
+          {
+            "name": "LocalDateTable_85ff1c35-a2e9-4617-aabf-03f46100e7d0",
+            "mode": "import",
+            "source": {
+              "expression": "Calendar(Date(Year(MIN('weather'[Timestamp])), 1, 1), Date(Year(MAX('weather'[Timestamp])), 12, 31))",
+              "type": "calculated"
+            }
+          }
+        ],
+        "showAsVariationsOnly": true
+      },
+      {
+        "name": "ForecastHours",
+        "annotations": [
+          {
+            "name": "PBI_Id",
+            "value": "6c685557b6ce470b854cc27249b36aff"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Value",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "isDataTypeInferred": true,
+            "isNameInferred": true,
+            "lineageTag": "b4f9a267-10a1-4612-a9ab-35f503d5b5fc",
+            "sourceColumn": "[Value]",
+            "summarizeBy": "sum",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Column",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c",
+                "value": "True"
+              }
+            ],
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "lineageTag": "6c1fc545-f625-4ad6-86e5-347109c24729",
+            "summarizeBy": "sum",
+            "type": "calculated"
+          },
+          {
+            "name": "Forecast Time",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "expression": [
+              "",
+              "-- Gets current time in IST (UTC+5.5) and adds the hour offset",
+              "VAR _CurrentTime = UTCNOW() + (5.5 / 24) ",
+              "VAR _FutureTime = _CurrentTime + (ForecastHours[Value] / 24)",
+              "RETURN ",
+              "FORMAT(_FutureTime, \"h AM/PM\")"
+            ],
+            "isDataTypeInferred": true,
+            "lineageTag": "eb615ade-49f6-47fe-88ab-f2fe622f89f6",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "lineageTag": "3fd9bf07-8dfa-4c14-be34-f72ddeb6a37e",
+        "measures": [
+          {
+            "name": "Predicted Status",
+            "expression": [
+              "",
+              "VAR _CurrentP = MAX('weather'[pressure])",
+              "VAR _Trend = [PressureTrend] / 3 ",
+              "VAR _Offset = SELECTEDVALUE('ForecastHours'[Value])",
+              "VAR _FutureP = _CurrentP + (_Trend * _Offset)",
+              "",
+              "-- Calculate if the predicted hour will be night (6 PM to 6 AM)",
+              "VAR _CurrentHour = HOUR(MAX('weather'[timestamp]))",
+              "VAR _FutureHour = MOD(_CurrentHour + _Offset, 24)",
+              "VAR _IsNightForecast = IF(_FutureHour >= 18 || _FutureHour < 6, 1, 0)",
+              "",
+              "RETURN",
+              "SWITCH( TRUE(),",
+              "    _FutureP < 1009, \"Stormy ⛈️\",",
+              "    _FutureP < 1010.5, \"Rainy 🌧️\",",
+              "    -- Night check for clear/sunny",
+              "    _IsNightForecast = 1 && _FutureP >= 1011, \"Clear Sky 🌙\",",
+              "    _IsNightForecast = 0 && _FutureP >= 1011, \"Sunny ☀️\",",
+              "    \"Partly Cloudy ⛅\"",
+              ")"
+            ],
+            "lineageTag": "a1f8e029-38e2-478a-a326-0c161d850b0b"
+          },
+          {
+            "name": "Predicted Temp",
+            "expression": [
+              "",
+              "VAR _CurrentTemp = [Latest Temperature]",
+              "VAR _HourNow = HOUR(MAX('weather'[timestamp]))",
+              "VAR _FutureHour = _HourNow + SELECTEDVALUE('ForecastHours'[Value])",
+              "-- Simple model: Temp rises 1 degree per hour until 3 PM, then falls",
+              "VAR _Adjustment = ",
+              "    IF(_FutureHour <= 15, ",
+              "        SELECTEDVALUE('ForecastHours'[Value]) * 1.2, ",
+              "        (SELECTEDVALUE('ForecastHours'[Value]) * -1.2)",
+              "    )",
+              "RETURN ",
+              "ROUND(_CurrentTemp + _Adjustment, 1) & \"°C\""
+            ],
+            "lineageTag": "f9835848-843a-4263-9677-2429b12b5105"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "ForecastHours",
+            "mode": "import",
+            "source": {
+              "expression": "GENERATESERIES(1, 6, 1)",
+              "type": "calculated"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

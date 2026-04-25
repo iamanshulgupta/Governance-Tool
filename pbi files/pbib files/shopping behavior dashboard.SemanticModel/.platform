@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "shopping behavior dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ce87577a-b080-443d-b0ac-9b43ba9d8a3c"
+  }
+}

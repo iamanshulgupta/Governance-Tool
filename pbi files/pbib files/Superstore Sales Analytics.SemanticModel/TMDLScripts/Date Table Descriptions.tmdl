@@ -1,0 +1,210 @@
+createOrReplace
+
+	/// Calculated date dimension table with year, quarter, month, day and weekend columns generated via CALENDARAUTO()
+	table DateTable
+		lineageTag: d1a1dca8-976d-4f32-bad2-f1d9c04b375e
+		dataCategory: Time
+
+		/// Full date value — primary key of the date table, used as the join column for all date relationships
+		column Date
+			isKey
+			formatString: mmmm d\, yyyy
+			lineageTag: c19a9c76-77d3-4ddb-b46a-22e47e376c15
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Date]
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+			annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		/// Calendar year number (e.g. 2024), sorted by YearSortOrder for descending display
+		column Year
+			formatString: 0
+			lineageTag: 5a026a06-308a-4101-a722-569418643e64
+			summarizeBy: sum
+			isNameInferred
+			sourceColumn: [Year]
+			sortByColumn: YearSortOrder
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Product Clusters","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Customer","TableItemName":"City Cluster","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		/// Quarter label (e.g. Q1, Q2, Q3, Q4)
+		column Quarter
+			dataType: string
+			lineageTag: a6d6476f-c592-4e96-9e1c-c1a3f6f07479
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Quarter]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Month number (1–12), used as the sort column for Month Name
+		column Month
+			dataType: int64
+			formatString: 0
+			lineageTag: 0dfc3570-f6b1-4fcd-b8b6-8b330dc6e176
+			summarizeBy: sum
+			isNameInferred
+			sourceColumn: [Month]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Abbreviated month name (e.g. Jan, Feb), sorted by the Month number column
+		column 'Month Name'
+			lineageTag: 5517a453-17bf-4a1a-bc7f-078963a09ae0
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Month Name]
+			sortByColumn: Month
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Day of the month number (1–31)
+		column Day
+			dataType: int64
+			formatString: 0
+			lineageTag: 72221f7a-1dd7-4b8f-bf4d-192bd9e0ba36
+			summarizeBy: sum
+			isNameInferred
+			sourceColumn: [Day]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Day of the week number (1=Monday to 7=Sunday using ISO weekday)
+		column 'Day of Week'
+			formatString: 0
+			lineageTag: 3d721b90-0ae8-41be-9401-dd9f3ebce9e7
+			summarizeBy: sum
+			isNameInferred
+			sourceColumn: [Day of Week]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Full name of the day (e.g. Monday, Tuesday), sorted by Day of Week
+		column 'Day Name'
+			lineageTag: 68e7c6d4-55c2-4a36-9363-c4bdc53949df
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Day Name]
+			sortByColumn: 'Day of Week'
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Year and month label formatted as MMM-YYYY (e.g. Jan-2024), sorted by YearMonthNum
+		column 'Year Month'
+			lineageTag: 8d4a7d8b-dc6b-4bb2-ab0b-af12b06b1dec
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Year Month]
+			sortByColumn: YearMonthNum
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Calculated first day of the month for each date, used for monthly aggregations and sparklines
+		column MonthStart = DATE(YEAR(DateTable[Date]), MONTH(DateTable[Date]), 1)
+			formatString: Long Date
+			lineageTag: 59fb0c29-285b-4d0d-8373-b0584a77f9c1
+			summarizeBy: none
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		/// Calculated first day of the year for each date, used for year-level aggregations
+		column YearStart = STARTOFYEAR(DateTable[Date])
+			formatString: Long Date
+			lineageTag: 72da3ff1-909e-4dca-8f59-385570592173
+			summarizeBy: none
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		/// Indicates whether the date falls on a weekend or weekday (Weekend / Weekday)
+		column Weekend
+			lineageTag: 931a9ac4-feeb-4670-86e9-5c1a2264ca56
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: [Weekend]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Numeric year-month sort key (YYYYMM format, e.g. 202401), used to sort Year Month correctly
+		column YearMonthNum
+			formatString: 0
+			lineageTag: 4298cd0e-3f29-405e-8656-aa17e5f90a14
+			summarizeBy: sum
+			isNameInferred
+			sourceColumn: [YearMonthNum]
+
+			annotation SummarizationSetBy = Automatic
+
+		/// Numeric quarter sort key (YYYYQ format, e.g. 20241), used to sort quarters chronologically
+		column 'Quarter Sort'
+			lineageTag: b5a75f99-c99d-4de1-a290-9216c877bd7d
+			summarizeBy: sum
+			isNameInferred
+			sourceColumn: [Quarter Sort]
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		/// Calculated sort column for Year using negative year value to enable descending year ordering in visuals
+		column YearSortOrder = YEAR('DateTable'[Date]) * -1
+			formatString: 0
+			lineageTag: ba973c87-5dca-48db-aa5d-4dbbfa662d1a
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		hierarchy 'Date Hierarchy'
+			lineageTag: 4fdbfd61-c6b4-44fd-ab6d-9a66ef353a9f
+
+			level Year
+				lineageTag: 0e451229-632a-416f-af4d-32832866353b
+				column: Year
+
+			level Quarter
+				lineageTag: 33ff4c96-4560-48dd-b50b-8eccfc731cb3
+				column: Quarter
+
+			level 'Month Name'
+				lineageTag: 056856a2-3475-4405-9068-d7da01094431
+				column: 'Month Name'
+
+			level Day
+				lineageTag: 05860f83-7ae9-4df3-b3ad-2e726368025b
+				column: Day
+
+		partition DateTable = calculated
+			mode: import
+			source = ```
+					
+					VAR BaseCalendar = CALENDARAUTO()
+					
+					RETURN
+					ADDCOLUMNS (
+					    BaseCalendar,
+					    "Year", YEAR([Date]),
+					    "Quarter", "Q" & FORMAT([Date], "Q"),
+					    "Quarter Sort", YEAR([Date]) * 10 + VALUE(FORMAT([Date], "Q")),
+					    "Month", MONTH([Date]),
+					    "Month Name", FORMAT([Date], "MMM"),
+					    "Day", DAY([Date]),
+					    "Day of Week", WEEKDAY([Date],2),
+					    "Day Name", FORMAT([Date], "DDDD"),
+					    "Year Month", FORMAT([Date], "MMM-YYYY"), 
+					    "Weekend", IF(WEEKDAY([Date], 2) >= 6, "Weekend", "Weekday"),
+					    "YearMonthNum", YEAR([Date]) * 100 + MONTH([Date])
+					)
+					```
+
+		annotation PBI_Id = 594bf8bfccc948cc997dc64ecc48e465
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Product","TableItemName":"Product Clusters","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Customer","TableItemName":"City Cluster","ObjectType":4},"LinkType":"UsedInGroup"}]

@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "tabOrder": [
+    "Measures Descriptions",
+    "Columns Descriptions",
+    "Model Relationships",
+    "Model Tables",
+    "Sales Table Descriptions",
+    "Product Sales Descriptions",
+    "Date Table Descriptions",
+    "Script 1"
+  ],
+  "defaultTab": "Script 1"
+}

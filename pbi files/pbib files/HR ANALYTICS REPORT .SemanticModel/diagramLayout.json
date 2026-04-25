@@ -1,0 +1,349 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 341,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "people_fact",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 384.6,
+            "y": 48
+          },
+          "nodeIndex": "department_dim",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 769.3,
+            "y": 60
+          },
+          "nodeIndex": "job_level_dim",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1153.9,
+            "y": 0
+          },
+          "nodeIndex": "manager_dim",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1529.3,
+            "y": 0
+          },
+          "nodeIndex": "term_dim",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1901.6,
+            "y": 0
+          },
+          "nodeIndex": "demographic_dim",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2273.9,
+            "y": 24
+          },
+          "nodeIndex": "education_dim",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2646.2,
+            "y": 12
+          },
+          "nodeIndex": "location_dim",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3018.5,
+            "y": 24
+          },
+          "nodeIndex": "marital_dim",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "7f4f57bc-714d-45bc-ac58-ac24728f155d",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "Date",
+          "nodeLineageTag": "4a8c70a4-3765-46df-ab89-e2f12d5072aa",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "Parameter",
+          "nodeLineageTag": "f35ffdeb-d53e-4e6a-9c9a-358c43f915f9",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "Date Table1",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "Date Table2",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 69,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 1,
+      "scrollPosition": {
+        "x": 901.66664123535156,
+        "y": 375
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1155,
+            "y": 407.5
+          },
+          "nodeIndex": "people_fact",
+          "nodeLineageTag": "556e2ea6-22e9-4c26-9f68-14f1f92d1537",
+          "size": {
+            "height": 460,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 1636.4807796478271,
+            "y": 48.75
+          },
+          "nodeIndex": "demographic_dim",
+          "nodeLineageTag": "427fb7e9-2f70-4671-8189-4b61a5e4ed46",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1051.230770111084,
+            "y": 0
+          },
+          "nodeIndex": "department_dim",
+          "nodeLineageTag": "6ae61950-135e-4856-8bc8-27a4f264e80c",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1323.961537361145,
+            "y": 1.25
+          },
+          "nodeIndex": "education_dim",
+          "nodeLineageTag": "5ef870af-4e0d-4f52-aa54-5da0973e7dc7",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 688.9615395963192,
+            "y": 407.5300407409668
+          },
+          "nodeIndex": "job_level_dim",
+          "nodeLineageTag": "97de2dc4-5be2-4bf1-a792-a1ebf0ccae7a",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 638.9615395963192,
+            "y": 85.0300407409668
+          },
+          "nodeIndex": "location_dim",
+          "nodeLineageTag": "24b4dc0e-97d6-4e6a-8412-42ae10801838",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1680.2115395963192,
+            "y": 713.7800407409668
+          },
+          "nodeIndex": "marital_dim",
+          "nodeLineageTag": "cf44bf18-cdad-4f43-b970-9d708792af22",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 303.288462638855,
+            "y": 260.0300407409668
+          },
+          "nodeIndex": "term_dim",
+          "nodeLineageTag": "df4bcbc7-0ff8-453e-bfbd-04b8b0eed3fb",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 292.038462638855,
+            "y": 530.0300407409668
+          },
+          "nodeIndex": "manager_dim",
+          "nodeLineageTag": "a09ecad0-e67a-45db-9e0b-26e1b443399b",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1881.205132484436,
+            "y": 226.2650203704834
+          },
+          "nodeIndex": "Date",
+          "nodeLineageTag": "4a8c70a4-3765-46df-ab89-e2f12d5072aa",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 1379.2500238418579,
+            "y": 942.5
+          },
+          "nodeIndex": "Date Table1",
+          "nodeLineageTag": "c116b5d3-75d0-4b2c-a54c-3a586d9a4f37",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 980.50002384185791,
+            "y": 940
+          },
+          "nodeIndex": "Date Table2",
+          "nodeLineageTag": "bb076d34-3775-463b-9f06-97ba7c5fd9cd",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 12
+        }
+      ],
+      "name": "Employee Data Layout",
+      "zoomValue": 80,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Employee Data Layout",
+  "defaultDiagram": "All tables"
+}

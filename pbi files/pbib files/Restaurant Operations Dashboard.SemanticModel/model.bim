@@ -1,0 +1,661 @@
+{
+  "compatibilityLevel": 1600,
+  "model": {
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"Restaurant Operations\"]"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.146.1254.0 (25.08)+791a7518fadc83da883d79322a2658aff57c8db3"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-IN",
+    "cultures": [
+      {
+        "name": "en-IN",
+        "linguisticMetadata": {
+          "content": {
+            "Language": "en-US",
+            "Version": "1.0.0"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "relationships": [
+      {
+        "name": "802e9b74-4245-84fa-e219-7db87b92fdba",
+        "fromColumn": "Date",
+        "fromTable": "Restaurant Operations",
+        "toColumn": "Date",
+        "toTable": "Date Table"
+      }
+    ],
+    "sourceQueryCulture": "en-IN",
+    "tables": [
+      {
+        "name": "Restaurant Operations",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Order_ID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "f413410e-71e1-437c-bd69-e93019c63bdc",
+            "sourceColumn": "Order_ID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Outlet_ID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "0b0372d5-26ba-4693-8002-3e959561fa1e",
+            "sourceColumn": "Outlet_ID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "City",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "fa7badc8-8b5f-42fc-aef1-8fcfeeefbf0f",
+            "sourceColumn": "City",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "Long Date",
+            "lineageTag": "04534551-21fe-47a1-8c82-f3ba9d291ed8",
+            "sourceColumn": "Date",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Day_Type",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "11afede9-ac93-42fb-88dd-94e4a99d0f8f",
+            "sourceColumn": "Day_Type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Shift",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "64efa956-305a-4d3f-9996-187df5257056",
+            "sourceColumn": "Shift",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Category",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "852f81b8-3439-43b6-9678-3200ecf5367a",
+            "sourceColumn": "Category",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Item_Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "d735d19e-957a-4535-aaf3-79bc7ced0b5b",
+            "sourceColumn": "Item_Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Qty",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "7928503d-fd48-45e1-86b4-9e2d2b128f48",
+            "sourceColumn": "Qty",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Unit_Price",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "4b37258d-f738-4aa0-8aea-c098287b44e2",
+            "sourceColumn": "Unit_Price",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Discount_Pct",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "ee77575c-d35f-4378-88f3-18dd21c6a864",
+            "sourceColumn": "Discount_Pct",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Net_Revenue",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "042d169b-5cdf-4182-8543-9afda9494369",
+            "sourceColumn": "Net_Revenue",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Payment_Mode",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "1c9c1bfa-c665-4238-a455-a920c54e344f",
+            "sourceColumn": "Payment_Mode",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Dine_Type",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "a07dd550-20bf-4046-bf4d-5ba647fb85b9",
+            "sourceColumn": "Dine_Type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Rating",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "48e308db-3ab8-4add-a21b-b64233096d7b",
+            "sourceColumn": "Rating",
+            "summarizeBy": "sum"
+          }
+        ],
+        "lineageTag": "9a9efb54-1a56-49f1-a959-bcd1bc4532dc",
+        "partitions": [
+          {
+            "name": "Restaurant Operations",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Excel.Workbook(File.Contents(\"C:\\Users\\Chandra\\Downloads\\files (1)\\DS06_Restaurant_Chain_Operations.xlsx\"), null, true),",
+                "    #\"Restaurant Operations_Sheet\" = Source{[Item=\"Restaurant Operations\",Kind=\"Sheet\"]}[Data],",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Restaurant Operations_Sheet\", [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Order_ID\", type text}, {\"Outlet_ID\", type text}, {\"City\", type text}, {\"Date\", type date}, {\"Day_Type\", type text}, {\"Shift\", type text}, {\"Category\", type text}, {\"Item_Name\", type text}, {\"Qty\", Int64.Type}, {\"Unit_Price\", Int64.Type}, {\"Discount_Pct\", Int64.Type}, {\"Net_Revenue\", type number}, {\"Payment_Mode\", type text}, {\"Dine_Type\", type text}, {\"Rating\", type number}})",
+                "in",
+                "    #\"Changed Type\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Measure",
+        "annotations": [
+          {
+            "name": "PBI_Id",
+            "value": "a7c81f7f426244c697ab4a757ff37637"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Value",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isNameInferred": true,
+            "lineageTag": "7583acd2-926a-42cd-bd39-f9a2abd7aa33",
+            "sourceColumn": "[Value]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          }
+        ],
+        "lineageTag": "6ae498e9-b1cb-4e2d-ac31-4890e2798b3e",
+        "measures": [
+          {
+            "name": "Total Orders",
+            "expression": [
+              "",
+              "DISTINCTCOUNT('Restaurant Operations'[Order_ID])"
+            ],
+            "formatString": "0",
+            "lineageTag": "af3f5d31-71f4-420d-a6be-0ce0784cc409"
+          },
+          {
+            "name": "Total Revenue",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"currencyCulture\":\"bn-IN\"}"
+              }
+            ],
+            "expression": [
+              "",
+              "SUM('Restaurant Operations'[Net_Revenue])"
+            ],
+            "formatString": "\"₹\"\\ #,0.00;#,0.00\\ -\"₹\";\"₹\"\\ #,0.00",
+            "lineageTag": "4932430d-a6eb-4547-b1ea-d3c911dddf84"
+          },
+          {
+            "name": "Total Qty",
+            "expression": [
+              "",
+              "SUM('Restaurant Operations'[Qty])"
+            ],
+            "formatString": "0",
+            "lineageTag": "ff8f0bba-51cd-4c84-9c7e-c56636a6346b"
+          },
+          {
+            "name": "Avg Order Value",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "DIVIDE([Total Revenue],[Total Orders])"
+            ],
+            "lineageTag": "db8e5cd3-0158-4691-9e55-cb4f699454dc"
+          },
+          {
+            "name": "Avg Rating",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "AVERAGE('Restaurant Operations'[Rating])"
+            ],
+            "lineageTag": "b6842d73-b455-4f96-9ebb-a32490392779"
+          },
+          {
+            "name": "Previous Orders",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "[Total Orders],",
+              "DATEADD('Date Table'[Date],-1,MONTH)",
+              ")"
+            ],
+            "lineageTag": "4f7af3e2-d71e-4472-afd8-78e85e790b5f"
+          },
+          {
+            "name": "Order Growth %",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "DIVIDE(",
+              "[Total Orders]-[Previous Orders],",
+              "[Previous Orders]",
+              ")"
+            ],
+            "lineageTag": "5cd91940-4d23-4792-a40f-260af2492a1c"
+          },
+          {
+            "name": "Order Trend",
+            "expression": [
+              "",
+              "IF(",
+              "[Order Growth %] >= 0,",
+              "\"↑ \" & FORMAT([Order Growth %],\"0.0%\"),",
+              "\"↓ \" & FORMAT(ABS([Order Growth %]),\"0.0%\")",
+              ")"
+            ],
+            "lineageTag": "5172158b-38a5-444a-94cb-3e6678daba37"
+          },
+          {
+            "name": "Previous Revenue",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "CALCULATE(",
+              "[Total Revenue],",
+              "DATEADD('Date Table'[Date],-1,MONTH)",
+              ")"
+            ],
+            "lineageTag": "498fc76a-b7a2-46ca-8839-d5e7af32ba3c"
+          },
+          {
+            "name": "Revenue Growth %",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "DIVIDE(",
+              "[Total Revenue]-[Previous Revenue],",
+              "[Previous Revenue]",
+              ")"
+            ],
+            "lineageTag": "82e30b4f-4d49-401c-85a8-7d0f6056b93d"
+          },
+          {
+            "name": "Revenue Trend",
+            "expression": [
+              "",
+              "IF(",
+              "[Revenue Growth %] >= 0,",
+              "\"↑ \" & FORMAT([Revenue Growth %],\"0.0%\"),",
+              "\"↓ \" & FORMAT(ABS([Revenue Growth %]),\"0.0%\")",
+              ")"
+            ],
+            "lineageTag": "42b550a8-1f8d-4d36-a84f-ec9f06b8d16e"
+          },
+          {
+            "name": "Previous AOV",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "CALCULATE(",
+              "[Avg Order Value],",
+              "DATEADD('Date Table'[Date],-1,MONTH)",
+              ")"
+            ],
+            "lineageTag": "34b0a335-e523-4074-8a65-c48160189469"
+          },
+          {
+            "name": "AOV Change",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "[Avg Order Value] - [Previous AOV]"
+            ],
+            "lineageTag": "aabaa7fb-f8f5-4a19-9808-9659d08c0215"
+          },
+          {
+            "name": "AOV Trend",
+            "expression": [
+              "",
+              "IF(",
+              "[AOV Change] >= 0,",
+              "\"↑ \" & FORMAT([AOV Change],\"0.0%\"),",
+              "\"↓ \" & FORMAT(ABS([AOV Change]),\"0.0%\")",
+              ")"
+            ],
+            "lineageTag": "0441a1a1-a06d-4f94-958c-9ea5b44477e3"
+          },
+          {
+            "name": "Previous Rating",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "CALCULATE(",
+              "[Avg Rating],",
+              "DATEADD('Date Table'[Date],-1,MONTH)",
+              ")"
+            ],
+            "lineageTag": "dd9f7f23-d89e-432d-a809-d31464b70d74"
+          },
+          {
+            "name": "Rating Change",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "[Avg Rating] - [Previous Rating]"
+            ],
+            "lineageTag": "ced81473-3837-428b-a3ef-437df0621e86"
+          },
+          {
+            "name": "Rating Trend",
+            "expression": [
+              "",
+              "IF(",
+              "[Rating Change] >= 0,",
+              "\"↑ \" & FORMAT([Rating Change],\"0.0\"),",
+              "\"↓ \" & FORMAT(ABS([Rating Change]),\"0.0\")",
+              ")"
+            ],
+            "lineageTag": "9a0f0db7-f900-4484-8a7e-a116f9a6570f"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "_Measure",
+            "mode": "import",
+            "source": {
+              "expression": "{\"Restaurant Operations\"}",
+              "type": "calculated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Date Table",
+        "annotations": [
+          {
+            "name": "PBI_Id",
+            "value": "03b26f31a3e64a7187e8878f14d1c4a4"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Date",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "dateTime",
+            "formatString": "General Date",
+            "isDataTypeInferred": true,
+            "isKey": true,
+            "isNameInferred": true,
+            "lineageTag": "2dcf68c0-0b1f-42d7-98c6-17899d7626dd",
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          },
+          {
+            "name": "Year",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "expression": "YEAR('Date Table'[Date])",
+            "formatString": "0",
+            "isDataTypeInferred": true,
+            "lineageTag": "6361e239-652e-4d31-becc-3ce3da555a0d",
+            "summarizeBy": "sum",
+            "type": "calculated"
+          },
+          {
+            "name": "Month",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "expression": "FORMAT('Date Table'[Date],\"MMM\")",
+            "isDataTypeInferred": true,
+            "lineageTag": "34640629-b6ba-4f28-800c-645cf1aacb04",
+            "summarizeBy": "none",
+            "type": "calculated"
+          },
+          {
+            "name": "Month No",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "expression": "MONTH('Date Table'[Date])",
+            "formatString": "0",
+            "isDataTypeInferred": true,
+            "lineageTag": "05f88def-0375-4fcb-8663-85fb4be2fbe2",
+            "summarizeBy": "sum",
+            "type": "calculated"
+          }
+        ],
+        "dataCategory": "Time",
+        "lineageTag": "f15a5fc1-0532-4b81-a641-3255f952bbaf",
+        "partitions": [
+          {
+            "name": "Date Table",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "",
+                "CALENDAR(",
+                "    MIN('Restaurant Operations'[Date]),",
+                "    MAX('Restaurant Operations'[Date])",
+                ")"
+              ],
+              "type": "calculated"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

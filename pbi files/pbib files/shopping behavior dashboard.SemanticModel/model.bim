@@ -1,0 +1,379 @@
+{
+  "compatibilityLevel": 1600,
+  "model": {
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"shopping\"]"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.146.1254.0 (25.08)+791a7518fadc83da883d79322a2658aff57c8db3"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-IN",
+    "cultures": [
+      {
+        "name": "en-IN",
+        "linguisticMetadata": {
+          "content": {
+            "Language": "en-US",
+            "Version": "1.0.0"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "tables": [
+      {
+        "name": "shopping",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "changedProperties": [
+          {
+            "property": "Name"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Customer ID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "627261e4-9f6c-4786-80b4-b35c6b08484b",
+            "sourceColumn": "Customer ID",
+            "summarizeBy": "count"
+          },
+          {
+            "name": "Age",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "5b29b10e-7b5e-4a6e-8ab6-5988dc6dceb9",
+            "sourceColumn": "Age",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Gender",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "8becc875-8536-467d-ac72-c35b9c5cddc5",
+            "sourceColumn": "Gender",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Item Purchased",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "4d9ef510-a9d7-488a-bdca-2b30624367c2",
+            "sourceColumn": "Item Purchased",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Category",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "78b6db9c-868f-4526-b43c-86a2e93880c7",
+            "sourceColumn": "Category",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Purchase Amount",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "32b46d82-e332-4913-b73d-ea8671c73631",
+            "sourceColumn": "Purchase Amount",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Location",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "e377959a-aa1b-45bb-ae58-5d187f3b1b0b",
+            "sourceColumn": "Location",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Size",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "9d071319-d4e5-43ea-9290-58ee644be8f4",
+            "sourceColumn": "Size",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Color",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "db631c74-8e19-46c8-aa97-3092a6a80678",
+            "sourceColumn": "Color",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Season",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "64a3ff20-d938-46d9-a6d0-6232eb20fd7d",
+            "sourceColumn": "Season",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Review Rating",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "d5322845-6a0e-4eeb-9e35-0f3ed8acfc51",
+            "sourceColumn": "Review Rating",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Subscription Status",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "19a26c5d-d8a1-4bd0-89b7-1a5a0756d479",
+            "sourceColumn": "Subscription Status",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Discount Applied",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "3f1aa64a-5c5d-4096-9de3-1fa2bc755460",
+            "sourceColumn": "Discount Applied",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Previous Purchases",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "4c47fbd9-73cf-4496-9e42-ecb139d934ee",
+            "sourceColumn": "Previous Purchases",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Payment Method",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "c79bbcea-7060-4cc6-84cd-8a39ffec647f",
+            "sourceColumn": "Payment Method",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Frequency of Purchases",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "b1267667-3b27-4342-9358-69833ef0ff3b",
+            "sourceColumn": "Frequency of Purchases",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Age Group",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "expression": [
+              "",
+              "SWITCH(",
+              "    TRUE(),",
+              "    'Shopping'[Age] >= 18 && 'Shopping'[Age] <= 21, \"18 - 21\",",
+              "    'Shopping'[Age] >= 22 && 'Shopping'[Age] <= 25, \"22 - 25\",",
+              "    'Shopping'[Age] >= 26 && 'Shopping'[Age] <= 30, \"26 - 30\",",
+              "    'Shopping'[Age] >= 31 && 'Shopping'[Age] <= 35, \"31 - 35\",",
+              "    'Shopping'[Age] >= 36 && 'Shopping'[Age] <= 40, \"36 - 40\",",
+              "    'Shopping'[Age] >= 41 && 'Shopping'[Age] <= 45, \"41 - 45\",",
+              "    'Shopping'[Age] >= 46 && 'Shopping'[Age] <= 50, \"46 - 50\",",
+              "    'Shopping'[Age] >= 51 && 'Shopping'[Age] <= 55, \"51 - 55\",",
+              "    'Shopping'[Age] >= 56, \"56+\",",
+              "    \"Unknown\"",
+              ")",
+              ""
+            ],
+            "isDataTypeInferred": true,
+            "lineageTag": "83c559de-bb4c-4bc9-9d72-52573eb79ec0",
+            "summarizeBy": "none",
+            "type": "calculated"
+          }
+        ],
+        "lineageTag": "2eb2f850-436a-4fcc-a8a9-7b249f91e374",
+        "measures": [
+          {
+            "name": "Total Customers",
+            "expression": "DISTINCTCOUNT('shopping'[Customer ID])",
+            "formatString": "0",
+            "lineageTag": "af479734-9ed8-4f61-8fd5-e6d998a5750b"
+          },
+          {
+            "name": "Total Revenue",
+            "expression": "CALCULATE(SUM('shopping'[Purchase Amount]))",
+            "formatString": "0",
+            "lineageTag": "622876a2-9754-458a-849f-42181fd1b3d1"
+          },
+          {
+            "name": "Average Purchase value",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": "AVERAGE('shopping'[Purchase Amount])",
+            "lineageTag": "e2c5f48e-fd9f-4546-b4aa-4f8a63f01299"
+          },
+          {
+            "name": "Subscibers",
+            "expression": "CALCULATE(COUNTROWS(shopping), shopping[Subscription Status] = \"Yes\")",
+            "formatString": "0",
+            "lineageTag": "36b94e3e-7669-4004-bbbd-0f29bd8d9896"
+          },
+          {
+            "name": "Repeating Customers",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "    COUNTROWS(VALUES('shopping'[Customer ID])),",
+              "    FILTER(",
+              "        VALUES('shopping'[Customer ID]),",
+              "        COUNTROWS(FILTER('shopping', 'shopping'[Customer ID] = EARLIER('shopping'[Customer ID]))) > 1",
+              "    )",
+              ")",
+              ""
+            ],
+            "formatString": "0",
+            "lineageTag": "b9d2ba0f-8313-4790-8c0c-e0ba655f3a88"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "shopping",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(\"C:\\Users\\moham\\Desktop\\archive\\shopping_behavior_updated (1).csv\"),[Delimiter=\",\", Columns=16, Encoding=1252, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Customer ID\", Int64.Type}, {\"Age\", Int64.Type}, {\"Gender\", type text}, {\"Item Purchased\", type text}, {\"Category\", type text}, {\"Purchase Amount (USD)\", Int64.Type}, {\"Location\", type text}, {\"Size\", type text}, {\"Color\", type text}, {\"Season\", type text}, {\"Review Rating\", type number}, {\"Subscription Status\", type text}, {\"Discount Applied\", type text}, {\"Previous Purchases\", Int64.Type}, {\"Payment Method\", type text}, {\"Frequency of Purchases\", type text}}),",
+                "    #\"Removed Duplicates\" = Table.Distinct(#\"Changed Type\"),",
+                "    #\"Removed Blank Rows\" = Table.SelectRows(#\"Removed Duplicates\", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {\"\", null}))),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Blank Rows\",{{\"Purchase Amount (USD)\", \"Purchase Amount\"}})",
+                "in",
+                "    #\"Renamed Columns\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

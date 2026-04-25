@@ -1,0 +1,571 @@
+{
+  "compatibilityLevel": 1600,
+  "model": {
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "1"
+      },
+      {
+        "name": "PBI_QueryOrder",
+        "value": "[\"Academic Performance\"]"
+      },
+      {
+        "name": "PBIDesktopVersion",
+        "value": "2.146.1254.0 (25.08)+791a7518fadc83da883d79322a2658aff57c8db3"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ],
+    "culture": "en-IN",
+    "cultures": [
+      {
+        "name": "en-IN",
+        "linguisticMetadata": {
+          "content": {
+            "Language": "en-US",
+            "Version": "1.0.0"
+          },
+          "contentType": "json"
+        }
+      }
+    ],
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-IN",
+    "tables": [
+      {
+        "name": "Academic Performance",
+        "annotations": [
+          {
+            "name": "PBI_NavigationStepName",
+            "value": "Navigation"
+          },
+          {
+            "name": "PBI_ResultType",
+            "value": "Table"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Student_ID",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "b3e08459-fb8e-4142-bc45-69bd45393940",
+            "sourceColumn": "Student_ID",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Name",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "ee017145-c58e-41ed-bf81-71fa55142103",
+            "sourceColumn": "Name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Class",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "81d85364-8667-46a5-9a21-f4e2b0cd4af0",
+            "sourceColumn": "Class",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Section",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "53564253-2e37-4a51-9584-0de7de304a32",
+            "sourceColumn": "Section",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Gender",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "8109a682-fb99-47e6-9f6a-22bc8e45774d",
+            "sourceColumn": "Gender",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "English",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "bdc2b21a-8a38-4a73-8bd0-021623dd4da8",
+            "sourceColumn": "English",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Math",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "384bbfb5-0323-4e12-9a28-9766fce6ccfb",
+            "sourceColumn": "Math",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Science",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "c1b36dde-31d3-49b6-b72e-fb5f52624a9f",
+            "sourceColumn": "Science",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Social_Studies",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "7911a7d9-9933-4375-b584-7c369d2a8d7a",
+            "sourceColumn": "Social_Studies",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Computer",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "1be0c636-c3c8-4c31-8cb0-7025b6695e1d",
+            "sourceColumn": "Computer",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Total",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "int64",
+            "formatString": "0",
+            "lineageTag": "49f51f1c-a2fe-46c4-8216-e5577d5ccde3",
+            "sourceColumn": "Total",
+            "summarizeBy": "sum"
+          },
+          {
+            "name": "Percentage",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "ad59c86f-78f3-473d-a421-ec6dd9db9b42",
+            "sourceColumn": "Percentage",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Grade",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "0fb90848-73a7-4d69-ad16-040eb0bf220c",
+            "sourceColumn": "Grade",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Attendance_Pct",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "User"
+              },
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "dataType": "double",
+            "lineageTag": "f1ec7a98-52e0-456c-8939-82289a755d58",
+            "sourceColumn": "Attendance_Pct",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "Extracurricular",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "lineageTag": "af9eeaea-b1a5-4911-97d2-3faa7fedc298",
+            "sourceColumn": "Extracurricular",
+            "summarizeBy": "none"
+          }
+        ],
+        "lineageTag": "f7db30f3-c715-415b-81fc-e7de2c5757bd",
+        "partitions": [
+          {
+            "name": "Academic Performance",
+            "mode": "import",
+            "source": {
+              "expression": [
+                "let",
+                "    Source = Excel.Workbook(File.Contents(\"C:\\Users\\Chandra\\Downloads\\files (1)\\DS04_School_Academic_Performance.xlsx\"), null, true),",
+                "    #\"Academic Performance_Sheet\" = Source{[Item=\"Academic Performance\",Kind=\"Sheet\"]}[Data],",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Academic Performance_Sheet\", [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Student_ID\", type text}, {\"Name\", type text}, {\"Class\", type text}, {\"Section\", type text}, {\"Gender\", type text}, {\"English\", Int64.Type}, {\"Math\", Int64.Type}, {\"Science\", Int64.Type}, {\"Social_Studies\", Int64.Type}, {\"Computer\", Int64.Type}, {\"Total\", Int64.Type}, {\"Percentage\", type number}, {\"Grade\", type text}, {\"Attendance_Pct\", type number}, {\"Extracurricular\", type text}})",
+                "in",
+                "    #\"Changed Type\""
+              ],
+              "type": "m"
+            }
+          }
+        ]
+      },
+      {
+        "name": "_Measure",
+        "annotations": [
+          {
+            "name": "PBI_Id",
+            "value": "51a92e9d8719491685fcb86e68b90c92"
+          }
+        ],
+        "columns": [
+          {
+            "name": "Value",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isNameInferred": true,
+            "lineageTag": "78f4969f-dae5-4703-ad5e-2afcb3e41a99",
+            "sourceColumn": "[Value]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          }
+        ],
+        "lineageTag": "67f00ad3-fe42-4bc4-b53c-b4a7df04981e",
+        "measures": [
+          {
+            "name": "Total Students",
+            "expression": [
+              "",
+              "DISTINCTCOUNT('Academic Performance'[Student_ID])"
+            ],
+            "formatString": "0",
+            "lineageTag": "10ceaa00-d57a-431c-b55e-c70a78c092d9"
+          },
+          {
+            "name": "Avg Percentage",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "AVERAGE('Academic Performance'[Percentage])"
+            ],
+            "lineageTag": "bbd20c96-2b44-488e-9c6f-80a3aa9f3530"
+          },
+          {
+            "name": "Avg Attendance",
+            "expression": [
+              "DIVIDE(",
+              "AVERAGE('Academic Performance'[Attendance_Pct]),100)"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%",
+            "lineageTag": "e69471ad-23e8-43a7-adff-37fac1a364a2"
+          },
+          {
+            "name": "Avg Total Marks",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "AVERAGE('Academic Performance'[Total])"
+            ],
+            "lineageTag": "7a628fec-c9fb-4e82-be30-a87dafb0ee83"
+          },
+          {
+            "name": "Top Students",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "COUNTROWS('Academic Performance'),",
+              "'Academic Performance'[Percentage] >= 75",
+              ")"
+            ],
+            "formatString": "0",
+            "lineageTag": "5be2a772-9be7-41ab-a657-f2f9787d05a6"
+          },
+          {
+            "name": "Top Student Rate",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "DIVIDE([Top Students],[Total Students])"
+            ],
+            "lineageTag": "cce66e9b-8d31-4e39-bef9-db72a3f266b1"
+          },
+          {
+            "name": "Student KPI Details",
+            "expression": [
+              "",
+              "\"Top Performers: \" &",
+              "FORMAT([Top Students],\"#,##0\")",
+              "& \" | Avg %: \" &",
+              "FORMAT([Avg Percentage],\"0.0\")"
+            ],
+            "lineageTag": "1ac67368-9d08-4070-a736-d98c44fad03c"
+          },
+          {
+            "name": "Grade A Students",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "COUNTROWS('Academic Performance'),",
+              "'Academic Performance'[Grade] = \"A\"",
+              ")"
+            ],
+            "formatString": "0",
+            "lineageTag": "6998857c-0052-41db-8d51-ba243449b0b5"
+          },
+          {
+            "name": "Grade A Rate",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "DIVIDE([Grade A Students],[Total Students])"
+            ],
+            "lineageTag": "1b7a5e1d-131a-4b7d-a928-39edd1fa579c"
+          },
+          {
+            "name": "Score KPI Details",
+            "expression": [
+              "",
+              "\"Avg Marks: \" &",
+              "FORMAT([Avg Total Marks],\"0\")",
+              "& \" | Grade A: \" &",
+              "FORMAT([Grade A Rate],\"0%\")"
+            ],
+            "lineageTag": "c9be9275-06ea-47ee-836d-7b3c81d88547"
+          },
+          {
+            "name": "Low Attendance Students",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "COUNTROWS('Academic Performance'),",
+              "'Academic Performance'[Attendance_Pct] < 75",
+              ")"
+            ],
+            "formatString": "0",
+            "lineageTag": "0dd60d15-0918-43d3-99f1-af97b24b67e9"
+          },
+          {
+            "name": "Low Attendance Rate",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": [
+              "",
+              "DIVIDE([Low Attendance Students],[Total Students])"
+            ],
+            "lineageTag": "bf47ef88-4c38-4b21-ab14-5e0bc781d96e"
+          },
+          {
+            "name": "Attendance KPI Details",
+            "expression": [
+              "",
+              "\"Low Attendance: \" &",
+              "FORMAT([Low Attendance Rate],\"0%\")",
+              "& \" | Avg Attendance: \" &",
+              "FORMAT([Avg Attendance],\"0%\")"
+            ],
+            "lineageTag": "86fac14a-7b4c-4335-bfd5-e9c25df5767e"
+          },
+          {
+            "name": "Active Students",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "COUNTROWS('Academic Performance'),",
+              "'Academic Performance'[Extracurricular] <> \"None\"",
+              ")"
+            ],
+            "formatString": "0",
+            "lineageTag": "4d6352e2-b359-423c-b545-672558fd6bc8"
+          },
+          {
+            "name": "Activity Rate",
+            "expression": [
+              "",
+              "DIVIDE([Active Students],[Total Students])"
+            ],
+            "formatString": "0.00%;-0.00%;0.00%",
+            "lineageTag": "50809820-969c-4556-97b1-1198f35a9e41"
+          },
+          {
+            "name": "Engagement KPI Details",
+            "expression": [
+              "",
+              "\"Extracurricular: \" &",
+              "FORMAT([Activity Rate],\"0%\")",
+              "& \" | Active Students: \" &",
+              "FORMAT([Active Students],\"#,##0\")"
+            ],
+            "lineageTag": "3b10abf8-8b19-4761-8519-b1d30cc3e671"
+          },
+          {
+            "name": "Avg English",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": "AVERAGE('Academic Performance'[English])",
+            "lineageTag": "e376756e-02dc-46fe-962b-c59e14a36be0"
+          },
+          {
+            "name": "Avg Math",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": "AVERAGE('Academic Performance'[Math])",
+            "lineageTag": "ed23df97-b8d5-4aeb-a9e0-08be14bc6e22"
+          },
+          {
+            "name": "Avg Science",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": "AVERAGE('Academic Performance'[Science])",
+            "lineageTag": "c0414658-0358-4288-9b3e-86d5c37cf980"
+          },
+          {
+            "name": "Avg Social Studies",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": "AVERAGE('Academic Performance'[Social_Studies])",
+            "lineageTag": "7384e81b-8993-470d-8496-ca013972d4b2"
+          },
+          {
+            "name": "Avg Computer",
+            "annotations": [
+              {
+                "name": "PBI_FormatHint",
+                "value": "{\"isGeneralNumber\":true}"
+              }
+            ],
+            "expression": "AVERAGE('Academic Performance'[Computer])",
+            "lineageTag": "e8624043-831e-49b9-9e28-13909671ba4f"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "_Measure",
+            "mode": "import",
+            "source": {
+              "expression": "{\"Academic Performance\"}",
+              "type": "calculated"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
