@@ -2,7 +2,7 @@
 
 A lightweight, automated web application built with Streamlit that audits Power BI dashboards (`.pbix` files) against standard governance and UI/UX design checklists. 
 
-**[🔗 Try the Live App Here]([https://governance-tool-zqtwpzxasp5bthzarpftex.streamlit.app//)**
+**[🔗 Try the Live App Here](https://governance-tool-zqtwpzxasp5bthzarpftex.streamlit.app//)**
 
 ---
 
